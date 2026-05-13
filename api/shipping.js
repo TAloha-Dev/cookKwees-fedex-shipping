@@ -1,7 +1,7 @@
 // api/shipping.js
 // Cook Kwee's — FedEx REST API Middleware
 
-const axios = require('axios');
+const axios = require("axios");
 
 let tokenCache = { token: null, expiresAt: 0 };
 
@@ -11,13 +11,13 @@ async function getFedExToken() {
     return tokenCache.token;
   }
   const params = new URLSearchParams();
-  params.append('grant_type', 'client_credentials');
-  params.append('client_id', process.env.FEDEX_CLIENT_ID);
-  params.append('client_secret', process.env.FEDEX_CLIENT_SECRET);
+  params.append("grant_type", "client_credentials");
+  params.append("client_id", process.env.FEDEX_CLIENT_ID);
+  params.append("client_secret", process.env.FEDEX_CLIENT_SECRET);
   const response = await axios.post(
     `${process.env.FEDEX_BASE_URL}/oauth/token`,
     params,
-    { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } }
+    { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
   );
   tokenCache.token = response.data.access_token;
   tokenCache.expiresAt = now + response.data.expires_in * 1000;
@@ -26,19 +26,19 @@ async function getFedExToken() {
 
 function formatServiceName(serviceType) {
   const names = {
-    'FEDEX_2_DAY':        'FedEx 2nd Day',
-    'FEDEX_2_DAY_AM':     'FedEx 2nd Day AM',
-    'FEDEX_GROUND':       'FedEx Ground',
-    'PRIORITY_OVERNIGHT': 'FedEx Priority Overnight',
-    'STANDARD_OVERNIGHT': 'FedEx Standard Overnight',
-    'FIRST_OVERNIGHT':    'FedEx First Overnight'
+    FEDEX_2_DAY: "FedEx 2nd Day",
+    FEDEX_2_DAY_AM: "FedEx 2nd Day AM",
+    FEDEX_GROUND: "FedEx Ground",
+    PRIORITY_OVERNIGHT: "FedEx Priority Overnight",
+    STANDARD_OVERNIGHT: "FedEx Standard Overnight",
+    FIRST_OVERNIGHT: "FedEx First Overnight",
   };
   return names[serviceType] || serviceType;
 }
 
 module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
   }
   try {
     const { id, cart } = req.body;
@@ -49,12 +49,12 @@ module.exports = async (req, res) => {
       requestedShipment: {
         shipper: {
           address: {
-            streetLines: [originAddress?.street || '1 Kahana St'],
-            city: originAddress?.city || 'Lahaina',
-            stateOrProvinceCode: originAddress?.stateOrProvinceCode || 'HI',
-            postalCode: originAddress?.postalCode || '96761',
-            countryCode: originAddress?.countryCode || 'US'
-          }
+            streetLines: [originAddress?.street || "1 Kahana St"],
+            city: originAddress?.city || "Lahaina",
+            stateOrProvinceCode: originAddress?.stateOrProvinceCode || "HI",
+            postalCode: originAddress?.postalCode || "96761",
+            countryCode: originAddress?.countryCode || "US",
+          },
         },
         recipient: {
           address: {
@@ -62,27 +62,39 @@ module.exports = async (req, res) => {
             city: shippingAddress.city,
             stateOrProvinceCode: shippingAddress.stateOrProvinceCode,
             postalCode: shippingAddress.postalCode,
-            countryCode: shippingAddress.countryCode || 'US',
-            residential: true
-          }
+            countryCode: shippingAddress.countryCode || "US",
+            residential: true,
+          },
         },
-        requestedPackageLineItems: [{
-          weight: { units: 'LB', value: weight || 1 }
-        }],
-        pickupType: 'USE_SCHEDULED_PICKUP',
-        rateRequestType: ['ACCOUNT']
-      }
+        requestedPackageLineItems: [
+          {
+            weight: { units: "LB", value: weight || 1 },
+          },
+        ],
+        pickupType: "USE_SCHEDULED_PICKUP",
+        rateRequestType: ["ACCOUNT"],
+        shippingChargesPayment: {
+          paymentType: "SENDER",
+          payor: {
+            responsibleParty: {
+              accountNumber: {
+                value: process.env.FEDEX_ACCOUNT_NUMBER,
+              },
+            },
+          },
+        },
+      },
     };
     const rateResponse = await axios.post(
       `${process.env.FEDEX_BASE_URL}/rate/v1/rates/quotes`,
       rateRequest,
       {
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json',
-          'X-locale': 'en_US'
-        }
-      }
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          "X-locale": "en_US",
+        },
+      },
     );
     const shippingOptions = [];
     const rateDetails = rateResponse.data.output?.rateReplyDetails || [];
@@ -91,14 +103,14 @@ module.exports = async (req, res) => {
       if (!ratedShipment) continue;
       shippingOptions.push({
         title: formatServiceName(detail.serviceType),
-        fulfillmentType: 'shipping',
+        fulfillmentType: "shipping",
         rate: parseFloat(ratedShipment.totalNetCharge),
-        transitDays: detail.commit?.transitDays || 2
+        transitDays: detail.commit?.transitDays || 2,
       });
     }
     return res.status(200).json({ id, shippingOptions });
   } catch (error) {
-    console.error('FedEx API error:', error.response?.data || error.message);
+    console.error("FedEx API error:", error.response?.data || error.message);
     return res.status(200).json({ id: req.body?.id, shippingOptions: [] });
   }
 };

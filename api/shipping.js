@@ -63,7 +63,7 @@ module.exports = async (req, res) => {
             stateOrProvinceCode: shippingAddress.stateOrProvinceCode,
             postalCode: shippingAddress.postalCode,
             countryCode: shippingAddress.countryCode || 'US',
-            residential: false
+            residential: true
           }
         },
         requestedPackageLineItems: [{

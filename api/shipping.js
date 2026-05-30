@@ -63,8 +63,19 @@ module.exports = async (req, res) => {
   }
 
   try {
+    // Log full incoming request from Ecwid for debugging
+    console.log("Incoming request body:", JSON.stringify(req.body, null, 2));
+
     const { id, cart } = req.body;
     const { shippingAddress, originAddress, weight } = cart;
+
+    // Log parsed values for debugging
+    console.log("Parsed values:", JSON.stringify({
+      id,
+      shippingAddress,
+      originAddress,
+      weight,
+    }, null, 2));
 
     // Build origin address — fallback to Cook Kwee's default
     const shipperAddress = {
@@ -119,6 +130,9 @@ module.exports = async (req, res) => {
       },
     };
 
+    // Log the rate request being sent to FedEx
+    console.log("FedEx rate request:", JSON.stringify(rateRequest, null, 2));
+
     // Call FedEx Rates and Transit Times API
     const rateResponse = await axios.post(
       `${process.env.FEDEX_BASE_URL}/rate/v1/rates/quotes`,
@@ -150,15 +164,20 @@ module.exports = async (req, res) => {
       });
     }
 
+    console.log("Shipping options returned:", JSON.stringify(shippingOptions, null, 2));
+
     return res.status(200).json({ id, shippingOptions });
 
   } catch (error) {
+    // Log full incoming request from Ecwid
+    console.error("Incoming request body:", JSON.stringify(req.body, null, 2));
+
+    // Log full FedEx error including parameterList
     console.error(
       "FedEx API error:",
-      error.response?.data || error.message
+      JSON.stringify(error.response?.data || error.message, null, 2)
     );
-    // Return empty options — Ecwid will show no shipping methods
-    // rather than crashing checkout entirely
+
     return res.status(200).json({
       id: req.body?.id,
       shippingOptions: [],

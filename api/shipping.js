@@ -1,8 +1,10 @@
 // api/shipping.js
-// Cook Kwee's — FedEx REST API Middleware
+// Cook Kwee's Maui Cookies — FedEx REST API Middleware
+// Updated: May 30, 2026
 
 const axios = require("axios");
 
+// ─── Token Cache ───────────────────────────────────────────────────────────────
 let tokenCache = { token: null, expiresAt: 0 };
 
 async function getFedExToken() {
@@ -14,48 +16,76 @@ async function getFedExToken() {
   params.append("grant_type", "client_credentials");
   params.append("client_id", process.env.FEDEX_CLIENT_ID);
   params.append("client_secret", process.env.FEDEX_CLIENT_SECRET);
+
   const response = await axios.post(
     `${process.env.FEDEX_BASE_URL}/oauth/token`,
     params,
-    { headers: { "Content-Type": "application/x-www-form-urlencoded" } },
+    { headers: { "Content-Type": "application/x-www-form-urlencoded" } }
   );
+
   tokenCache.token = response.data.access_token;
   tokenCache.expiresAt = now + response.data.expires_in * 1000;
   return tokenCache.token;
 }
 
+// ─── Config ────────────────────────────────────────────────────────────────────
+// Phase 1: FedEx 2nd Day only.
+// To add more services later, add to this Set.
+const ALLOWED_SERVICES = new Set(["FEDEX_2_DAY"]);
+
+const SERVICE_NAMES = {
+  FEDEX_2_DAY: "FedEx 2nd Day",
+  FEDEX_2_DAY_AM: "FedEx 2nd Day AM",
+  FEDEX_GROUND: "FedEx Ground",
+  GROUND_HOME_DELIVERY: "FedEx Ground Home Delivery",
+  PRIORITY_OVERNIGHT: "FedEx Priority Overnight",
+  STANDARD_OVERNIGHT: "FedEx Standard Overnight",
+  FIRST_OVERNIGHT: "FedEx First Overnight",
+};
+
 function formatServiceName(serviceType) {
-  const names = {
-    FEDEX_2_DAY: "FedEx 2nd Day",
-    FEDEX_2_DAY_AM: "FedEx 2nd Day AM",
-    FEDEX_GROUND: "FedEx Ground",
-    PRIORITY_OVERNIGHT: "FedEx Priority Overnight",
-    STANDARD_OVERNIGHT: "FedEx Standard Overnight",
-    FIRST_OVERNIGHT: "FedEx First Overnight",
-  };
-  return names[serviceType] || serviceType;
+  return SERVICE_NAMES[serviceType] || serviceType;
 }
 
+// ─── Default Shipper Address (Cook Kwee's, Lahaina HI) ────────────────────────
+const DEFAULT_ORIGIN = {
+  streetLines: ["1 Kahana St"],
+  city: "Lahaina",
+  stateOrProvinceCode: "HI",
+  postalCode: "96761",
+  countryCode: "US",
+};
+
+// ─── Main Handler ──────────────────────────────────────────────────────────────
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
   }
+
   try {
     const { id, cart } = req.body;
     const { shippingAddress, originAddress, weight } = cart;
+
+    // Build origin address — fallback to Cook Kwee's default
+    const shipperAddress = {
+      streetLines: [originAddress?.street || DEFAULT_ORIGIN.streetLines[0]],
+      city: originAddress?.city || DEFAULT_ORIGIN.city,
+      stateOrProvinceCode:
+        originAddress?.stateOrProvinceCode || DEFAULT_ORIGIN.stateOrProvinceCode,
+      postalCode: originAddress?.postalCode || DEFAULT_ORIGIN.postalCode,
+      countryCode: originAddress?.countryCode || DEFAULT_ORIGIN.countryCode,
+    };
+
+    // Get FedEx OAuth token
     const token = await getFedExToken();
+
+    // Build FedEx rate request
     const rateRequest = {
-      accountNumber: { value: process.env.FEDEX_ACCOUNT_NUMBER },
+      accountNumber: {
+        value: process.env.FEDEX_ACCOUNT_NUMBER,
+      },
       requestedShipment: {
-        shipper: {
-          address: {
-            streetLines: [originAddress?.street || "1 Kahana St"],
-            city: originAddress?.city || "Lahaina",
-            stateOrProvinceCode: originAddress?.stateOrProvinceCode || "HI",
-            postalCode: originAddress?.postalCode || "96761",
-            countryCode: originAddress?.countryCode || "US",
-          },
-        },
+        shipper: { address: shipperAddress },
         recipient: {
           address: {
             streetLines: [shippingAddress.street],
@@ -68,7 +98,10 @@ module.exports = async (req, res) => {
         },
         requestedPackageLineItems: [
           {
-            weight: { units: "LB", value: weight || 1 },
+            weight: {
+              units: "LB",
+              value: weight || 1,
+            },
           },
         ],
         pickupType: "USE_SCHEDULED_PICKUP",
@@ -85,6 +118,8 @@ module.exports = async (req, res) => {
         },
       },
     };
+
+    // Call FedEx Rates and Transit Times API
     const rateResponse = await axios.post(
       `${process.env.FEDEX_BASE_URL}/rate/v1/rates/quotes`,
       rateRequest,
@@ -94,13 +129,19 @@ module.exports = async (req, res) => {
           "Content-Type": "application/json",
           "X-locale": "en_US",
         },
-      },
+      }
     );
+
+    // Parse and filter rate results — Phase 1: FEDEX_2_DAY only
     const shippingOptions = [];
     const rateDetails = rateResponse.data.output?.rateReplyDetails || [];
+
     for (const detail of rateDetails) {
+      if (!ALLOWED_SERVICES.has(detail.serviceType)) continue;
+
       const ratedShipment = detail.ratedShipmentDetails?.[0];
       if (!ratedShipment) continue;
+
       shippingOptions.push({
         title: formatServiceName(detail.serviceType),
         fulfillmentType: "shipping",
@@ -108,9 +149,19 @@ module.exports = async (req, res) => {
         transitDays: detail.commit?.transitDays || 2,
       });
     }
+
     return res.status(200).json({ id, shippingOptions });
+
   } catch (error) {
-    console.error("FedEx API error:", error.response?.data || error.message);
-    return res.status(200).json({ id: req.body?.id, shippingOptions: [] });
+    console.error(
+      "FedEx API error:",
+      error.response?.data || error.message
+    );
+    // Return empty options — Ecwid will show no shipping methods
+    // rather than crashing checkout entirely
+    return res.status(200).json({
+      id: req.body?.id,
+      shippingOptions: [],
+    });
   }
 };

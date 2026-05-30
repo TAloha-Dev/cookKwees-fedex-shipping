@@ -12,6 +12,7 @@ async function getFedExToken() {
   if (tokenCache.token && tokenCache.expiresAt > now + 5 * 60 * 1000) {
     return tokenCache.token;
   }
+
   const params = new URLSearchParams();
   params.append("grant_type", "client_credentials");
   params.append("client_id", process.env.FEDEX_CLIENT_ID);
@@ -34,27 +35,29 @@ async function getFedExToken() {
 const ALLOWED_SERVICES = new Set(["FEDEX_2_DAY"]);
 
 const SERVICE_NAMES = {
-  FEDEX_2_DAY: "FedEx 2nd Day",
-  FEDEX_2_DAY_AM: "FedEx 2nd Day AM",
-  FEDEX_GROUND: "FedEx Ground",
-  GROUND_HOME_DELIVERY: "FedEx Ground Home Delivery",
-  PRIORITY_OVERNIGHT: "FedEx Priority Overnight",
-  STANDARD_OVERNIGHT: "FedEx Standard Overnight",
-  FIRST_OVERNIGHT: "FedEx First Overnight",
+  FEDEX_2_DAY:           "FedEx 2nd Day",
+  FEDEX_2_DAY_AM:        "FedEx 2nd Day AM",
+  FEDEX_GROUND:          "FedEx Ground",
+  GROUND_HOME_DELIVERY:  "FedEx Ground Home Delivery",
+  PRIORITY_OVERNIGHT:    "FedEx Priority Overnight",
+  STANDARD_OVERNIGHT:    "FedEx Standard Overnight",
+  FIRST_OVERNIGHT:       "FedEx First Overnight",
 };
 
 function formatServiceName(serviceType) {
   return SERVICE_NAMES[serviceType] || serviceType;
 }
 
-// ─── Default Shipper Address (Cook Kwee's, Lahaina HI) ────────────────────────
-const DEFAULT_ORIGIN = {
-  streetLines: ["1 Kahana St"],
-  city: "Lahaina",
-  stateOrProvinceCode: "HI",
-  postalCode: "96761",
-  countryCode: "US",
-};
+// ─── Address Validation ────────────────────────────────────────────────────────
+function isCompleteAddress(address) {
+  return (
+    address?.street &&
+    address?.city &&
+    address?.postalCode &&
+    address?.stateOrProvinceCode &&
+    address?.countryCode
+  );
+}
 
 // ─── Main Handler ──────────────────────────────────────────────────────────────
 module.exports = async (req, res) => {
@@ -63,28 +66,23 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // Log full incoming request from Ecwid for debugging
-    console.log("Incoming request body:", JSON.stringify(req.body, null, 2));
-
     const { id, cart } = req.body;
     const { shippingAddress, originAddress, weight } = cart;
 
-    // Log parsed values for debugging
-    console.log("Parsed values:", JSON.stringify({
-      id,
-      shippingAddress,
-      originAddress,
-      weight,
-    }, null, 2));
+    // Skip FedEx call if address is incomplete (Ecwid calls this
+    // endpoint multiple times as the customer types their address)
+    if (!isCompleteAddress(shippingAddress)) {
+      console.log("Incomplete shipping address — skipping FedEx call");
+      return res.status(200).json({ id, shippingOptions: [] });
+    }
 
-    // Build origin address — fallback to Cook Kwee's default
+    // Build shipper address from Ecwid origin (Cook Kwee's actual address)
     const shipperAddress = {
-      streetLines: [originAddress?.street || DEFAULT_ORIGIN.streetLines[0]],
-      city: originAddress?.city || DEFAULT_ORIGIN.city,
-      stateOrProvinceCode:
-        originAddress?.stateOrProvinceCode || DEFAULT_ORIGIN.stateOrProvinceCode,
-      postalCode: originAddress?.postalCode || DEFAULT_ORIGIN.postalCode,
-      countryCode: originAddress?.countryCode || DEFAULT_ORIGIN.countryCode,
+      streetLines: [originAddress?.street?.trim() || "251 Lalo Street, Suite K1"],
+      city: originAddress?.city || "Kahului",
+      stateOrProvinceCode: originAddress?.stateOrProvinceCode || "HI",
+      postalCode: originAddress?.postalCode || "96732",
+      countryCode: originAddress?.countryCode || "US",
     };
 
     // Get FedEx OAuth token
@@ -130,9 +128,6 @@ module.exports = async (req, res) => {
       },
     };
 
-    // Log the rate request being sent to FedEx
-    console.log("FedEx rate request:", JSON.stringify(rateRequest, null, 2));
-
     // Call FedEx Rates and Transit Times API
     const rateResponse = await axios.post(
       `${process.env.FEDEX_BASE_URL}/rate/v1/rates/quotes`,
@@ -164,20 +159,14 @@ module.exports = async (req, res) => {
       });
     }
 
-    console.log("Shipping options returned:", JSON.stringify(shippingOptions, null, 2));
-
+    console.log("Shipping options returned:", JSON.stringify(shippingOptions));
     return res.status(200).json({ id, shippingOptions });
 
   } catch (error) {
-    // Log full incoming request from Ecwid
-    console.error("Incoming request body:", JSON.stringify(req.body, null, 2));
-
-    // Log full FedEx error including parameterList
     console.error(
       "FedEx API error:",
       JSON.stringify(error.response?.data || error.message, null, 2)
     );
-
     return res.status(200).json({
       id: req.body?.id,
       shippingOptions: [],

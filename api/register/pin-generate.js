@@ -1,6 +1,6 @@
 // api/register/pin-generate.js
 // FedEx Account Registration — Step 2a: PIN Generation
-// Sends a 6-digit PIN to the merchant via SMS, CALL, or EMAIL
+// Sends a 6-digit PIN to the merchant via SMS, CALL, or EMAIL.
 
 const axios              = require("axios");
 const { getTAlohaToken } = require("../../lib/fedex-auth");
@@ -23,9 +23,9 @@ module.exports = async (req, res) => {
 
     const token = await getTAlohaToken();
 
-    await axios.post(
-      `${process.env.TALOHA_FEDEX_BASE_URL}/csp/v1/account/pin`,
-      { option },
+    const response = await axios.post(
+      `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/customerkeys/pingeneration`,
+      { locale: "en_US", option },
       {
         headers: {
           Authorization:    `Bearer ${token}`,
@@ -36,17 +36,25 @@ module.exports = async (req, res) => {
       }
     );
 
-    return res.status(200).json({ success: true });
+    const status = response.data?.output?.status;
+    console.log(`PIN Generation (${option}): ${status}`);
+
+    return res.status(200).json({
+      success: true,
+      status: status || "PIN sent",
+      method: option,
+    });
 
   } catch (error) {
     console.error("PIN generation error:", JSON.stringify(error.response?.data || error.message, null, 2));
 
     const code    = error.response?.data?.errors?.[0]?.code;
     const message =
-      code === "EMAIL.NOT.REGISTERED"       ? "No email registered for this FedEx account." :
-      code === "PHONENUMBER.NOT.REGISTERED" ? "No phone number registered for this FedEx account." :
-      code === "PINGGENERATION.MAXRETRY.EXCEEDED" ? "Too many PIN attempts. Please try invoice verification instead." :
-      error.response?.data?.errors?.[0]?.message || "Failed to send PIN. Please try again.";
+      code === "EMAIL.NOT.REGISTERED"             ? "No email registered for this FedEx account." :
+      code === "PHONENUMBER.NOT.REGISTERED"       ? "No phone number registered for this FedEx account." :
+      code === "PINGENERATION.MAXRETRY.EXCEEDED"  ? "Too many PIN attempts. Please try invoice verification instead." :
+      code === "ACCOUNTAUTHTOKEN.SESSION.EXPIRED" ? "Address Auth Token expired. Please restart registration." :
+      error.response?.data?.errors?.[0]?.message  || "Failed to send PIN. Please try again.";
 
     return res.status(400).json({ error: message });
   }

@@ -1,9 +1,8 @@
 // api/register/address.js
 // FedEx Account Registration — Step 1: Address Validation
-// Validates merchant's FedEx account number + billing address
-// Returns accountAuthToken (valid 30 minutes) for next step
+// Correct endpoint: POST /registration/v2/address/keysgeneration
 
-const axios          = require("axios");
+const axios              = require("axios");
 const { getTAlohaToken } = require("../../lib/fedex-auth");
 
 module.exports = async (req, res) => {
@@ -21,16 +20,17 @@ module.exports = async (req, res) => {
     const token = await getTAlohaToken();
 
     const response = await axios.post(
-      `${process.env.TALOHA_FEDEX_BASE_URL}/csp/v1/account`,
+      `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/address/keysgeneration`,
       {
-        accountNumber:  { value: accountNumber },
+        accountNumber: { value: accountNumber },
         customerName,
         address: {
-          streetLines:          [address.street],
-          city:                 address.city,
-          stateOrProvinceCode:  address.stateOrProvinceCode,
-          postalCode:           address.postalCode,
-          countryCode:          address.countryCode || "US",
+          streetLines:         [address.street],
+          city:                address.city,
+          stateOrProvinceCode: address.stateOrProvinceCode,
+          postalCode:          address.postalCode,
+          countryCode:         address.countryCode || "US",
+          residential:         false,
         },
       },
       {
@@ -42,13 +42,24 @@ module.exports = async (req, res) => {
       }
     );
 
-    const accountAuthToken = response.data.output?.accountAuthToken;
-    if (!accountAuthToken) throw new Error("No accountAuthToken received.");
+    const output           = response.data.output;
+    const accountAuthToken = output?.accountAuthToken;
+    const mfaOptions       = output?.mfaOptions || [];
 
-    return res.status(200).json({ accountAuthToken });
+    if (!accountAuthToken && mfaOptions.length === 0) {
+      throw new Error("No response received from FedEx.");
+    }
+
+    return res.status(200).json({
+      accountAuthToken,
+      mfaOptions,
+    });
 
   } catch (error) {
-    console.error("Address validation error:", JSON.stringify(error.response?.data || error.message, null, 2));
+    console.error(
+      "Address validation error:",
+      JSON.stringify(error.response?.data || error.message, null, 2)
+    );
 
     const code    = error.response?.data?.errors?.[0]?.code;
     const message =

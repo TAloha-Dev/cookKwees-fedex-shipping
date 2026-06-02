@@ -1,1 +1,53 @@
+// api/register/pin-generate.js
+// FedEx Account Registration — Step 2a: PIN Generation
+// Sends a 6-digit PIN to the merchant via SMS, CALL, or EMAIL
 
+const axios              = require("axios");
+const { getTAlohaToken } = require("../../lib/fedex-auth");
+
+module.exports = async (req, res) => {
+  if (req.method !== "POST") {
+    return res.status(405).json({ error: "Method not allowed" });
+  }
+
+  try {
+    const { accountAuthToken, option } = req.body;
+
+    if (!accountAuthToken || !option) {
+      return res.status(400).json({ error: "Missing accountAuthToken or option." });
+    }
+
+    if (!["SMS", "CALL", "EMAIL"].includes(option)) {
+      return res.status(400).json({ error: "Invalid option. Use SMS, CALL, or EMAIL." });
+    }
+
+    const token = await getTAlohaToken();
+
+    await axios.post(
+      `${process.env.TALOHA_FEDEX_BASE_URL}/csp/v1/account/pin`,
+      { option },
+      {
+        headers: {
+          Authorization:    `Bearer ${token}`,
+          accountAuthToken,
+          "Content-Type":   "application/json",
+          "x-locale":       "en_US",
+        },
+      }
+    );
+
+    return res.status(200).json({ success: true });
+
+  } catch (error) {
+    console.error("PIN generation error:", JSON.stringify(error.response?.data || error.message, null, 2));
+
+    const code    = error.response?.data?.errors?.[0]?.code;
+    const message =
+      code === "EMAIL.NOT.REGISTERED"       ? "No email registered for this FedEx account." :
+      code === "PHONENUMBER.NOT.REGISTERED" ? "No phone number registered for this FedEx account." :
+      code === "PINGGENERATION.MAXRETRY.EXCEEDED" ? "Too many PIN attempts. Please try invoice verification instead." :
+      error.response?.data?.errors?.[0]?.message || "Failed to send PIN. Please try again.";
+
+    return res.status(400).json({ error: message });
+  }
+};

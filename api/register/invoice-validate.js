@@ -20,18 +20,18 @@ module.exports = async (req, res) => {
 
     const token = await getTAlohaToken();
 
-    const response = await axios.post(
-      `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/invoice/validate`,
-      { invoiceDetail },
-      {
-        headers: {
-          Authorization:    `Bearer ${token}`,
-          accountAuthToken,
-          "Content-Type":   "application/json",
-          "x-locale":       "en_US",
-        },
-      }
-    );
+   const response = await axios.post(
+  `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/invoice/keysgeneration`,
+  { invoiceDetail },
+  {
+    headers: {
+      Authorization:  `Bearer ${token}`,
+      accountAuthToken,
+      "Content-Type": "application/json",
+      "x-locale":     "en_US",
+    },
+  }
+);
 
     const { child_Key, child_secret } = response.data.output || {};
     if (!child_Key || !child_secret) throw new Error("No credentials received from FedEx.");

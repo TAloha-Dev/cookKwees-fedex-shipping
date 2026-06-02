@@ -21,7 +21,7 @@ module.exports = async (req, res) => {
     const token = await getTAlohaToken();
 
     const response = await axios.post(
-      `${process.env.TALOHA_FEDEX_BASE_URL}/csp/v1/account/pin/validate`,
+       `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/pin/keysgeneration`,
       { secureCodePin },
       {
         headers: {

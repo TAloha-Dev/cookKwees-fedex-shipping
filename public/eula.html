@@ -1,1 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FedEx Shipping Agreement | TAloha</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #f5f5f5;
+      padding: 20px;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: #4A148C;
+      color: white;
+      padding: 24px 32px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .eula-container {
+      padding: 32px;
+    }
+
+    .eula-scroll-box {
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      height: 400px;
+      overflow-y: scroll;
+      padding: 24px;
+      background: #fafafa;
+      margin-bottom: 24px;
+      position: relative;
+    }
+
+    .eula-content {
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .eula-content h2 {
+      font-size: 18px;
+      margin: 24px 0 12px 0;
+      color: #4A148C;
+    }
+
+    .eula-content h2:first-child {
+      margin-top: 0;
+    }
+
+    .eula-content p {
+      margin-bottom: 16px;
+    }
+
+    .eula-content ul {
+      margin-left: 24px;
+      margin-bottom: 16px;
+    }
+
+    .eula-content li {
+      margin-bottom: 8px;
+    }
+
+    .scroll-indicator {
+      position: sticky;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(250,250,250,1) 50%, rgba(250,250,250,0));
+      padding: 16px 0 8px 0;
+      text-align: center;
+      font-size: 14px;
+      color: #666;
+      pointer-events: none;
+    }
+
+    .acceptance-section {
+      border-top: 1px solid #eee;
+      padding-top: 24px;
+    }
+
+    .checkbox-container {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+      margin-top: 4px;
+      width: 20px;
+      height: 20px;
+      cursor: pointer;
+    }
+
+    .checkbox-container input[type="checkbox"]:disabled {
+      cursor: not-allowed;
+      opacity: 0.4;
+    }
+
+    .checkbox-container label {
+      font-size: 16px;
+      line-height: 1.5;
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .checkbox-container label.disabled {
+      cursor: not-allowed;
+      opacity: 0.6;
+    }
+
+    .button-container {
+      display: flex;
+      gap: 16px;
+    }
+
+    button {
+      padding: 12px 32px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #FF6D00;
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #F4511E;
+    }
+
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #666;
+      border: 1px solid #ddd;
+    }
+
+    .btn-secondary:hover {
+      background: #f5f5f5;
+    }
+
+    .fedex-disclaimer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #eee;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    .scroll-prompt {
+      background: #FFF3E0;
+      border-left: 4px solid #FF6D00;
+      padding: 12px 16px;
+      margin-bottom: 24px;
+      border-radius: 4px;
+      font-size: 14px;
+      color: #E65100;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>FedEx Shipping Service Agreement</h1>
+      <p>Please read the entire agreement before proceeding</p>
+    </div>
+
+    <div class="eula-container">
+      <div id="scrollPrompt" class="scroll-prompt">
+        📜 Please scroll through the entire agreement to continue
+      </div>
+
+      <div class="eula-scroll-box" id="eulaBox">
+        <div class="eula-content">
+          <!-- PLACEHOLDER EULA TEXT - Replace with actual FedEx EULA once received -->
+          <h2>FedEx Shipping Service Agreement</h2>
+          <p><em>Note: This is placeholder text. The actual FedEx End User License Agreement will be displayed here once provided by FedEx.</em></p>
+
+          <h2>1. Agreement to Terms</h2>
+          <p>By accepting this agreement, you authorize TAloha FedEx Shipping App to access your FedEx account and perform shipping operations on your behalf using FedEx shipping services.</p>
+
+          <h2>2. Use of Your FedEx Account</h2>
+          <p>You acknowledge and agree that:</p>
+          <ul>
+            <li>TAloha will securely store your FedEx account credentials</li>
+            <li>Shipping rates will be fetched from FedEx using your account</li>
+            <li>You are responsible for all shipping charges incurred through this integration</li>
+            <li>FedEx standard shipping terms and conditions apply to all shipments</li>
+          </ul>
+
+          <h2>3. Data Privacy and Security</h2>
+          <p>Your FedEx account credentials (child_key and child_secret) will be:</p>
+          <ul>
+            <li>Stored securely in encrypted format</li>
+            <li>Used only for shipping rate calculations and label generation</li>
+            <li>Never shared with third parties</li>
+            <li>Deleted upon your request or app uninstallation</li>
+          </ul>
+
+          <h2>4. FedEx Service Terms</h2>
+          <p>All shipments processed through this integration are subject to FedEx's standard terms of service, including but not limited to:</p>
+          <ul>
+            <li>FedEx Service Guide terms and conditions</li>
+            <li>Prohibited items and shipping restrictions</li>
+            <li>Liability limitations and declared value policies</li>
+            <li>Delivery timeframes and service guarantees</li>
+          </ul>
+
+          <h2>5. Billing and Charges</h2>
+          <p>You understand that:</p>
+          <ul>
+            <li>All shipping costs will be billed directly to your FedEx account</li>
+            <li>You are responsible for maintaining sufficient credit with FedEx</li>
+            <li>TAloha does not process or handle shipping payments</li>
+            <li>Disputed charges must be resolved directly with FedEx</li>
+          </ul>
+
+          <h2>6. Service Availability</h2>
+          <p>TAloha will make reasonable efforts to maintain service availability but does not guarantee uninterrupted access. Service may be temporarily unavailable due to maintenance, updates, or circumstances beyond our control.</p>
+
+          <h2>7. Termination</h2>
+          <p>You may terminate this agreement at any time by uninstalling the TAloha FedEx Shipping App from your Ecwid store. Upon termination, your stored FedEx credentials will be permanently deleted.</p>
+
+          <h2>8. Limitation of Liability</h2>
+          <p>TAloha provides this integration service on an "as is" basis. We are not liable for shipping delays, lost packages, or other issues arising from FedEx shipping operations. All FedEx-related claims must be filed directly with FedEx.</p>
+
+          <h2>9. Changes to Agreement</h2>
+          <p>TAloha reserves the right to modify this agreement. Continued use of the service after changes constitutes acceptance of the modified terms.</p>
+
+          <h2>10. Contact Information</h2>
+          <p>For questions about this agreement or the TAloha FedEx Shipping App, contact:</p>
+          <p>Technology Aloha<br>Email: jade@taloha.co</p>
+
+          <p style="margin-top: 32px;"><strong>Last Updated:</strong> June 4, 2026</p>
+          <!-- END PLACEHOLDER TEXT -->
+        </div>
+        <div class="scroll-indicator" id="scrollIndicator">
+          ⬇️ Scroll down to read the full agreement
+        </div>
+      </div>
+
+      <div class="acceptance-section">
+        <div class="checkbox-container">
+          <input 
+            type="checkbox" 
+            id="acceptCheckbox" 
+            disabled
+            aria-label="Accept FedEx EULA"
+          >
+          <label for="acceptCheckbox" id="acceptLabel" class="disabled">
+            I have read and accept the terms of the FedEx EULA to start shipping
+          </label>
+        </div>
+
+        <div class="button-container">
+          <button class="btn-secondary" onclick="window.history.back()">
+            Cancel
+          </button>
+          <button class="btn-primary" id="continueBtn" disabled onclick="handleContinue()">
+            Continue to Registration
+          </button>
+        </div>
+      </div>
+
+      <div class="fedex-disclaimer">
+        The FedEx service marks are owned by Federal Express Corporation and are used by permission.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const eulaBox = document.getElementById('eulaBox');
+    const acceptCheckbox = document.getElementById('acceptCheckbox');
+    const acceptLabel = document.getElementById('acceptLabel');
+    const continueBtn = document.getElementById('continueBtn');
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    const scrollPrompt = document.getElementById('scrollPrompt');
+
+    let hasScrolledToBottom = false;
+
+    // Detect scroll to bottom
+    eulaBox.addEventListener('scroll', function() {
+      const scrollTop = eulaBox.scrollTop;
+      const scrollHeight = eulaBox.scrollHeight;
+      const clientHeight = eulaBox.clientHeight;
+      
+      // Check if scrolled to bottom (with 20px tolerance)
+      if (scrollTop + clientHeight >= scrollHeight - 20) {
+        if (!hasScrolledToBottom) {
+          hasScrolledToBottom = true;
+          enableCheckbox();
+        }
+      }
+    });
+
+    function enableCheckbox() {
+      acceptCheckbox.disabled = false;
+      acceptLabel.classList.remove('disabled');
+      scrollIndicator.style.display = 'none';
+      scrollPrompt.style.display = 'none';
+    }
+
+    // Enable continue button when checkbox is checked
+    acceptCheckbox.addEventListener('change', function() {
+      continueBtn.disabled = !this.checked;
+    });
+
+    function handleContinue() {
+      if (!acceptCheckbox.checked) return;
+      
+      // Store acceptance timestamp
+      localStorage.setItem('ta_fedex_eula_accepted', new Date().toISOString());
+      
+      // Redirect to registration page
+      window.location.href = '/settings.html';
+    }
+
+    // Check if already accepted (for testing/navigation)
+    if (localStorage.getItem('ta_fedex_eula_accepted')) {
+      // Optional: auto-enable for returning users
+      // Uncomment if you want users to skip EULA on subsequent visits
+      // hasScrolledToBottom = true;
+      // enableCheckbox();
+      // acceptCheckbox.checked = true;
+      // continueBtn.disabled = false;
+    }
+  </script>
+</body>
+</html>

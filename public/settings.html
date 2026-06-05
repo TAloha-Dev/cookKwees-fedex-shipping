@@ -538,14 +538,14 @@
         body: JSON.stringify(accountData)
       });
 
-      const data = await response.json();
+    const data = await response.json();
 
-      if (data.accountAuthToken) {
-        accountAuthToken = data.accountAuthToken;
-        goToStep(2);
-      } else {
-        showAlert(data.error || 'Address validation failed. Please check your details and try again.');
-      }
+if (data.mfaOptions && data.mfaOptions[0] && data.mfaOptions[0].accountAuthToken) {
+  accountAuthToken = data.mfaOptions[0].accountAuthToken;
+  goToStep(2);
+} else {
+  showAlert(data.error || 'Address validation failed. Please check your details and try again.');
+}
     } catch (error) {
       showAlert('Connection error. Please try again.');
     } finally {

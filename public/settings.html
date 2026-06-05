@@ -1,656 +1,708 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FedEx Shipping Settings</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FedEx Account Registration | TAloha Shipping</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
       background: #f5f5f5;
-      color: #333;
-      padding: 24px;
+      padding: 20px;
     }
 
     .container {
-      max-width: 520px;
+      max-width: 700px;
       margin: 0 auto;
-      background: #fff;
+      background: white;
       border-radius: 8px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    .header {
+      background: #4A148C;
+      color: white;
+      padding: 24px 32px;
+    }
+
+    .header h1 {
+      font-size: 24px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .header p {
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .content {
       padding: 32px;
     }
 
-    .logo {
+    .step-indicator {
       display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 24px;
-    }
-
-    .logo img { height: 28px; }
-
-    .logo-text {
-      font-size: 16px;
-      font-weight: 600;
-      color: #4d148c;
-    }
-
-    h2 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-
-    .subtitle {
-      font-size: 13px;
-      color: #666;
-      margin-bottom: 24px;
-    }
-
-    /* Progress Steps */
-    .steps {
-      display: flex;
-      align-items: center;
-      margin-bottom: 28px;
-      gap: 0;
+      justify-content: space-between;
+      margin-bottom: 32px;
+      padding-bottom: 16px;
+      border-bottom: 2px solid #eee;
     }
 
     .step {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      color: #aaa;
+      text-align: center;
+      flex: 1;
+      position: relative;
     }
 
-    .step.active { color: #4d148c; font-weight: 600; }
-    .step.done { color: #28a745; }
-
-    .step-num {
-      width: 22px;
-      height: 22px;
+    .step-number {
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
-      background: #eee;
+      background: #ddd;
+      color: #666;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 11px;
-      font-weight: 700;
-      color: #aaa;
-    }
-
-    .step.active .step-num { background: #4d148c; color: #fff; }
-    .step.done .step-num { background: #28a745; color: #fff; }
-
-    .step-divider {
-      flex: 1;
-      height: 1px;
-      background: #ddd;
-      margin: 0 8px;
-    }
-
-    /* Form */
-    .form-group { margin-bottom: 16px; }
-
-    label {
-      display: block;
-      font-size: 13px;
-      font-weight: 500;
-      margin-bottom: 5px;
-      color: #444;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 10px 12px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      font-size: 14px;
-      color: #333;
-      transition: border-color 0.2s;
-    }
-
-    input:focus, select:focus {
-      outline: none;
-      border-color: #4d148c;
-    }
-
-    .row { display: flex; gap: 12px; }
-    .row .form-group { flex: 1; }
-
-    /* Buttons */
-    .btn {
-      width: 100%;
-      padding: 11px;
-      border: none;
-      border-radius: 6px;
-      font-size: 14px;
+      margin: 0 auto 8px auto;
       font-weight: 600;
-      cursor: pointer;
-      transition: opacity 0.2s;
-      margin-top: 8px;
+      font-size: 14px;
     }
 
-    .btn:hover { opacity: 0.88; }
-    .btn-primary { background: #4d148c; color: #fff; }
-    .btn-secondary { background: #f0f0f0; color: #444; }
-    .btn-success { background: #28a745; color: #fff; }
-    .btn-danger { background: #fff; color: #dc3545; border: 1px solid #dc3545; }
-
-    /* Verify Method Cards */
-    .method-cards {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 16px;
+    .step.active .step-number {
+      background: #4A148C;
+      color: white;
     }
 
-    .method-card {
-      flex: 1;
-      border: 2px solid #ddd;
-      border-radius: 8px;
-      padding: 16px 12px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.2s;
+    .step.complete .step-number {
+      background: #4CAF50;
+      color: white;
     }
 
-    .method-card:hover { border-color: #4d148c; }
-    .method-card.selected { border-color: #4d148c; background: #f8f4ff; }
-
-    .method-card .method-icon { font-size: 24px; margin-bottom: 8px; }
-    .method-card .method-title { font-size: 13px; font-weight: 600; }
-    .method-card .method-desc { font-size: 11px; color: #888; margin-top: 4px; }
-
-    /* PIN Options */
-    .pin-options {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 16px;
+    .step-label {
+      font-size: 12px;
+      color: #666;
     }
 
-    .pin-option {
-      flex: 1;
-      padding: 8px;
-      border: 1px solid #ddd;
-      border-radius: 6px;
-      text-align: center;
-      cursor: pointer;
-      font-size: 13px;
-      transition: all 0.2s;
+    .step.active .step-label {
+      color: #4A148C;
+      font-weight: 600;
     }
 
-    .pin-option:hover { border-color: #4d148c; }
-    .pin-option.selected { border-color: #4d148c; background: #f8f4ff; color: #4d148c; font-weight: 600; }
-
-    /* Alert */
-    .alert {
-      padding: 10px 14px;
-      border-radius: 6px;
-      font-size: 13px;
-      margin-bottom: 16px;
+    .form-section {
       display: none;
     }
 
-    .alert-error { background: #fff2f2; color: #dc3545; border: 1px solid #fcc; }
-    .alert-success { background: #f2fff5; color: #28a745; border: 1px solid #c3e6cb; }
-    .alert-info { background: #f0f4ff; color: #4d148c; border: 1px solid #c5cff5; }
-
-    /* Success State */
-    .success-box {
-      text-align: center;
-      padding: 16px 0;
+    .form-section.active {
+      display: block;
     }
 
-    .success-icon { font-size: 48px; margin-bottom: 12px; }
-
-    .connected-info {
-      background: #f8f4ff;
-      border: 1px solid #d8c8f5;
-      border-radius: 8px;
-      padding: 14px 16px;
-      margin: 16px 0;
-      text-align: left;
+    .form-group {
+      margin-bottom: 20px;
     }
 
-    .connected-info .info-row {
-      display: flex;
-      justify-content: space-between;
-      font-size: 13px;
+    label {
+      display: block;
       margin-bottom: 6px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #333;
     }
 
-    .connected-info .info-row:last-child { margin-bottom: 0; }
-    .connected-info .info-label { color: #888; }
-    .connected-info .info-value { font-weight: 600; color: #333; }
+    input[type="text"],
+    input[type="number"],
+    input[type="date"],
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+    }
 
-    /* Hidden */
-    .step-content { display: none; }
-    .step-content.active { display: block; }
+    input:focus,
+    select:focus {
+      outline: none;
+      border-color: #4A148C;
+    }
 
-    .loading { opacity: 0.6; pointer-events: none; }
+    .radio-group {
+      display: flex;
+      gap: 16px;
+      margin-top: 8px;
+    }
+
+    .radio-option {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .radio-option input[type="radio"] {
+      width: 18px;
+      height: 18px;
+      cursor: pointer;
+    }
+
+    .radio-option label {
+      margin: 0;
+      cursor: pointer;
+      font-weight: normal;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      font-weight: 600;
+      border-radius: 4px;
+      border: none;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: #FF6D00;
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #F4511E;
+    }
+
+    .btn-primary:disabled {
+      background: #ccc;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: white;
+      color: #666;
+      border: 1px solid #ddd;
+      margin-right: 12px;
+    }
+
+    .btn-secondary:hover {
+      background: #f5f5f5;
+    }
+
+    .button-group {
+      margin-top: 24px;
+      display: flex;
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+
+    .alert-error {
+      background: #FFEBEE;
+      border-left: 4px solid #F44336;
+      color: #C62828;
+    }
+
+    .alert-success {
+      background: #E8F5E9;
+      border-left: 4px solid #4CAF50;
+      color: #2E7D32;
+    }
+
+    .alert-info {
+      background: #E3F2FD;
+      border-left: 4px solid #2196F3;
+      color: #1565C0;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid #f3f3f3;
+      border-top: 2px solid #FF6D00;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    .success-state {
+      text-align: center;
+      padding: 40px 20px;
+    }
+
+    .success-icon {
+      width: 64px;
+      height: 64px;
+      background: #4CAF50;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px auto;
+      font-size: 32px;
+      color: white;
+    }
+
+    .fedex-disclaimer {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid #eee;
+      font-size: 12px;
+      color: #666;
+      text-align: center;
+    }
+
+    .hidden {
+      display: none;
+    }
   </style>
 </head>
 <body>
-<div class="container">
-
-  <!-- Logo -->
-  <div class="logo">
-    <div class="logo-text">FedEx Shipping by TAloha</div>
-  </div>
-
-  <!-- Progress Steps -->
-  <div class="steps">
-    <div class="step active" id="step-ind-1">
-      <div class="step-num">1</div>
-      <span>Connect</span>
-    </div>
-    <div class="step-divider"></div>
-    <div class="step" id="step-ind-2">
-      <div class="step-num">2</div>
-      <span>Verify</span>
-    </div>
-    <div class="step-divider"></div>
-    <div class="step" id="step-ind-3">
-      <div class="step-num">3</div>
-      <span>Done</span>
-    </div>
-  </div>
-
-  <!-- ─── STEP 1: Connect FedEx Account ─── -->
-  <div class="step-content active" id="step-1">
-    <h2>Connect your FedEx account</h2>
-    <p class="subtitle">Enter your FedEx account number and billing address exactly as registered with FedEx.</p>
-
-    <div id="alert-1" class="alert alert-error"></div>
-
-    <div class="form-group">
-      <label>FedEx Account Number *</label>
-      <input type="text" id="account-number" placeholder="9-digit account number" maxlength="9" />
+  <div class="container">
+    <div class="header">
+      <h1>FedEx Account Registration</h1>
+      <p>Connect your FedEx account to enable live shipping rates</p>
     </div>
 
-    <div class="form-group">
-      <label>Your Name or Company Name *</label>
-      <input type="text" id="customer-name" placeholder="As registered with FedEx" maxlength="50" />
-    </div>
-
-    <div class="form-group">
-      <label>Street Address *</label>
-      <input type="text" id="street" placeholder="Billing address on file with FedEx" />
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <label>City *</label>
-        <input type="text" id="city" placeholder="City" />
-      </div>
-      <div class="form-group">
-        <label>State *</label>
-        <input type="text" id="state" placeholder="e.g. HI" maxlength="2" />
-      </div>
-    </div>
-
-    <div class="row">
-      <div class="form-group">
-        <label>ZIP Code *</label>
-        <input type="text" id="postal-code" placeholder="ZIP Code" maxlength="10" />
-      </div>
-      <div class="form-group">
-        <label>Country *</label>
-        <select id="country">
-          <option value="US">United States</option>
-          <option value="CA">Canada</option>
-        </select>
-      </div>
-    </div>
-
-    <button class="btn btn-primary" id="btn-connect" onclick="connectAccount()">
-      Continue
-    </button>
-  </div>
-
-  <!-- ─── STEP 2: Choose Verification Method ─── -->
-  <div class="step-content" id="step-2">
-    <h2>Verify your identity</h2>
-    <p class="subtitle">FedEx requires identity verification before connecting your account.</p>
-
-    <div id="alert-2" class="alert alert-error"></div>
-
-    <div class="method-cards">
-      <div class="method-card selected" id="card-pin" onclick="selectMethod('pin')">
-        <div class="method-icon">📱</div>
-        <div class="method-title">Verify via PIN</div>
-        <div class="method-desc">Receive a 6-digit code via SMS, call, or email</div>
-      </div>
-      <div class="method-card" id="card-invoice" onclick="selectMethod('invoice')">
-        <div class="method-icon">🧾</div>
-        <div class="method-title">Verify via Invoice</div>
-        <div class="method-desc">Use a recent FedEx invoice (within 90 days)</div>
-      </div>
-    </div>
-
-    <!-- PIN Sub-form -->
-    <div id="pin-form">
-      <p style="font-size:13px; color:#666; margin-bottom:12px;">
-        Choose how to receive your PIN:
-      </p>
-      <div class="pin-options">
-        <div class="pin-option selected" id="opt-sms" onclick="selectPinOption('SMS')">📱 SMS</div>
-        <div class="pin-option" id="opt-call" onclick="selectPinOption('CALL')">📞 Call</div>
-        <div class="pin-option" id="opt-email" onclick="selectPinOption('EMAIL')">✉️ Email</div>
-      </div>
-      <button class="btn btn-secondary" id="btn-send-pin" onclick="sendPin()" style="margin-bottom:12px;">
-        Send PIN
-      </button>
-      <div id="pin-entry" style="display:none;">
-        <div class="alert alert-info" id="pin-sent-msg" style="display:block;">
-          PIN sent! Enter the 6-digit code below. Valid for 10 minutes.
+    <div class="content">
+      <!-- Step Indicator -->
+      <div class="step-indicator">
+        <div class="step" id="step1-indicator">
+          <div class="step-number">1</div>
+          <div class="step-label">Account Info</div>
         </div>
+        <div class="step" id="step2-indicator">
+          <div class="step-number">2</div>
+          <div class="step-label">Verification</div>
+        </div>
+        <div class="step" id="step3-indicator">
+          <div class="step-number">3</div>
+          <div class="step-label">Complete</div>
+        </div>
+      </div>
+
+      <!-- Alert Area -->
+      <div id="alertArea"></div>
+
+      <!-- Step 1: Account Number & Address -->
+      <div class="form-section active" id="step1">
+        <h2>FedEx Account Information</h2>
+        <p style="margin-bottom: 24px; color: #666;">Enter your 9-digit FedEx account number and billing address exactly as it appears in your FedEx account.</p>
+
         <div class="form-group">
-          <label>Enter PIN *</label>
-          <input type="text" id="pin-input" placeholder="6-digit PIN" maxlength="6" />
+          <label for="accountNumber">FedEx Account Number *</label>
+          <input type="text" id="accountNumber" placeholder="123456789" maxlength="9" required>
         </div>
-        <button class="btn btn-primary" onclick="verifyPin()">Verify PIN</button>
-      </div>
-    </div>
 
-    <!-- Invoice Sub-form -->
-    <div id="invoice-form" style="display:none;">
-      <div class="alert alert-info" style="display:block; margin-bottom:16px;">
-        Use a FedEx invoice not older than 90 days.
-      </div>
-      <div class="form-group">
-        <label>Invoice Number *</label>
-        <input type="number" id="invoice-number" placeholder="Invoice number" />
-      </div>
-      <div class="row">
         <div class="form-group">
-          <label>Invoice Date *</label>
-          <input type="date" id="invoice-date" />
+          <label for="customerName">Customer Name *</label>
+          <input type="text" id="customerName" placeholder="Your Company Name" required>
         </div>
+
         <div class="form-group">
-          <label>Amount (USD) *</label>
-          <input type="number" id="invoice-amount" placeholder="e.g. 234.00" step="0.01" />
+          <label for="street">Street Address *</label>
+          <input type="text" id="street" placeholder="123 Main Street" required>
+        </div>
+
+        <div class="form-group">
+          <label for="city">City *</label>
+          <input type="text" id="city" placeholder="New York" required>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div class="form-group">
+            <label for="state">State/Province *</label>
+            <input type="text" id="state" placeholder="NY" maxlength="2" required>
+          </div>
+          <div class="form-group">
+            <label for="postalCode">Postal Code *</label>
+            <input type="text" id="postalCode" placeholder="10001" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country *</label>
+          <select id="country">
+            <option value="US">United States</option>
+            <option value="CA">Canada</option>
+            <option value="MX">Mexico</option>
+          </select>
+        </div>
+
+        <div class="button-group">
+          <button class="btn-primary" onclick="validateAddress()" id="step1Btn">
+            Continue to Verification
+          </button>
         </div>
       </div>
-      <button class="btn btn-primary" onclick="verifyInvoice()">Verify Invoice</button>
+
+      <!-- Step 2: Factor 2 Verification -->
+      <div class="form-section" id="step2">
+        <h2>Identity Verification</h2>
+        <p style="margin-bottom: 24px; color: #666;">Choose how you'd like to verify your FedEx account:</p>
+
+        <div class="form-group">
+          <label>Verification Method</label>
+          <div class="radio-group">
+            <div class="radio-option">
+              <input type="radio" id="methodInvoice" name="verificationMethod" value="invoice" onchange="showMethodForm('invoice')">
+              <label for="methodInvoice">Invoice</label>
+            </div>
+            <div class="radio-option">
+              <input type="radio" id="methodPIN" name="verificationMethod" value="pin" onchange="showMethodForm('pin')">
+              <label for="methodPIN">PIN Code</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Invoice Form -->
+        <div id="invoiceForm" class="hidden">
+          <h3 style="margin: 24px 0 16px 0; font-size: 16px;">Invoice Details</h3>
+          <div class="alert-info" style="margin-bottom: 16px;">
+            Enter details from a recent FedEx invoice (must be within last 90 days)
+          </div>
+
+          <div class="form-group">
+            <label for="invoiceNumber">Invoice Number *</label>
+            <input type="text" id="invoiceNumber" placeholder="234562278">
+          </div>
+
+          <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 16px;">
+            <div class="form-group">
+              <label for="invoiceAmount">Amount *</label>
+              <input type="number" id="invoiceAmount" placeholder="234.00" step="0.01">
+            </div>
+            <div class="form-group">
+              <label for="invoiceCurrency">Currency *</label>
+              <select id="invoiceCurrency">
+                <option value="USD">USD</option>
+                <option value="CAD">CAD</option>
+                <option value="EUR">EUR</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="invoiceDate">Invoice Date *</label>
+            <input type="date" id="invoiceDate">
+          </div>
+
+          <div class="button-group">
+            <button class="btn-secondary" onclick="goToStep(1)">Back</button>
+            <button class="btn-primary" onclick="submitInvoice()" id="invoiceBtn">
+              Verify Invoice
+            </button>
+          </div>
+        </div>
+
+        <!-- PIN Form -->
+        <div id="pinForm" class="hidden">
+          <h3 style="margin: 24px 0 16px 0; font-size: 16px;">PIN Code Delivery</h3>
+          
+          <div id="pinDeliverySection">
+            <div class="form-group">
+              <label>How would you like to receive your PIN?</label>
+              <div class="radio-group">
+                <div class="radio-option">
+                  <input type="radio" id="pinEmail" name="pinDelivery" value="EMAIL">
+                  <label for="pinEmail">Email</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="pinSMS" name="pinDelivery" value="SMS">
+                  <label for="pinSMS">SMS</label>
+                </div>
+                <div class="radio-option">
+                  <input type="radio" id="pinCall" name="pinDelivery" value="CALL">
+                  <label for="pinCall">Phone Call</label>
+                </div>
+              </div>
+            </div>
+
+            <div class="button-group">
+              <button class="btn-secondary" onclick="goToStep(1)">Back</button>
+              <button class="btn-primary" onclick="requestPIN()" id="pinRequestBtn">
+                Send PIN
+              </button>
+            </div>
+          </div>
+
+          <div id="pinEntrySection" class="hidden">
+            <div class="alert-success" style="margin-bottom: 16px;">
+              PIN sent! Check your <span id="pinMethodLabel"></span>.
+            </div>
+
+            <div class="form-group">
+              <label for="pinCode">Enter 6-Digit PIN *</label>
+              <input type="text" id="pinCode" placeholder="123456" maxlength="6">
+            </div>
+
+            <div class="button-group">
+              <button class="btn-secondary" onclick="resetPINForm()">Try Different Method</button>
+              <button class="btn-primary" onclick="submitPIN()" id="pinSubmitBtn">
+                Verify PIN
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3: Success -->
+      <div class="form-section" id="step3">
+        <div class="success-state">
+          <div class="success-icon">✓</div>
+          <h2>Registration Complete!</h2>
+          <p style="color: #666; margin-top: 12px;">Your FedEx account has been successfully connected.</p>
+          <div style="margin-top: 32px;">
+            <button class="btn-primary" onclick="window.location.href='/'">
+              Continue to Dashboard
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="fedex-disclaimer">
+        The FedEx service marks are owned by Federal Express Corporation and are used by permission.
+      </div>
     </div>
   </div>
 
-  <!-- ─── STEP 3: Success ─── -->
-  <div class="step-content" id="step-3">
-    <div class="success-box">
-      <div class="success-icon">✅</div>
-      <h2>FedEx account connected!</h2>
-      <p class="subtitle">Your store is now ready to display live FedEx shipping rates at checkout.</p>
-    </div>
+  <script>
+    // State management
+    let accountAuthToken = null;
+    let storeId = 'test-store-' + Date.now(); // Generate unique ID for testing
+    let accountData = {};
 
-    <div class="connected-info">
-      <div class="info-row">
-        <span class="info-label">Account Number</span>
-        <span class="info-value" id="display-account">—</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Account Holder</span>
-        <span class="info-value" id="display-name">—</span>
-      </div>
-      <div class="info-row">
-        <span class="info-label">Status</span>
-        <span class="info-value" style="color:#28a745;">Active</span>
-      </div>
-    </div>
+    // Step navigation
+    function goToStep(stepNum) {
+      // Hide all sections
+      document.querySelectorAll('.form-section').forEach(s => s.classList.remove('active'));
+      document.querySelectorAll('.step').forEach(s => s.classList.remove('active', 'complete'));
 
-    <button class="btn btn-danger" onclick="disconnectAccount()">
-      Disconnect FedEx Account
-    </button>
-  </div>
+      // Show target section
+      document.getElementById('step' + stepNum).classList.add('active');
+      document.getElementById('step' + stepNum + '-indicator').classList.add('active');
 
-</div>
-
-<script>
-  // ─── State ─────────────────────────────────────────────────────────────────
-  let state = {
-    accountNumber: '',
-    customerName: '',
-    accountAuthToken: '',
-    verifyMethod: 'pin',
-    pinOption: 'SMS',
-    storeId: null,
-  };
-
-  // Get storeId from Ecwid (passed via URL param or Ecwid JS SDK)
-  const params = new URLSearchParams(window.location.search);
-  state.storeId = params.get('store_id') || params.get('storeId');
-
-  // ─── Step Navigation ───────────────────────────────────────────────────────
-  function goToStep(n) {
-    document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
-    document.getElementById(`step-${n}`).classList.add('active');
-
-    document.querySelectorAll('.step').forEach((el, i) => {
-      el.classList.remove('active', 'done');
-      if (i + 1 < n) el.classList.add('done');
-      if (i + 1 === n) el.classList.add('active');
-    });
-  }
-
-  // ─── Show Alert ────────────────────────────────────────────────────────────
-  function showAlert(stepNum, msg, type = 'error') {
-    const el = document.getElementById(`alert-${stepNum}`);
-    el.textContent = msg;
-    el.className = `alert alert-${type}`;
-    el.style.display = 'block';
-  }
-
-  function hideAlert(stepNum) {
-    const el = document.getElementById(`alert-${stepNum}`);
-    if (el) el.style.display = 'none';
-  }
-
-  // ─── Step 1: Connect Account ───────────────────────────────────────────────
-  async function connectAccount() {
-    hideAlert(1);
-
-    const accountNumber = document.getElementById('account-number').value.trim();
-    const customerName  = document.getElementById('customer-name').value.trim();
-    const street        = document.getElementById('street').value.trim();
-    const city          = document.getElementById('city').value.trim();
-    const stateCode     = document.getElementById('state').value.trim().toUpperCase();
-    const postalCode    = document.getElementById('postal-code').value.trim();
-    const countryCode   = document.getElementById('country').value;
-
-    if (!accountNumber || !customerName || !street || !city || !stateCode || !postalCode) {
-      return showAlert(1, 'Please fill in all required fields.');
-    }
-
-    if (accountNumber.length < 9) {
-      return showAlert(1, 'FedEx account number must be 9 digits.');
-    }
-
-    const btn = document.getElementById('btn-connect');
-    btn.textContent = 'Connecting...';
-    btn.classList.add('loading');
-
-    try {
-      const res = await fetch('/api/register/address', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          storeId: state.storeId,
-          accountNumber,
-          customerName,
-          address: { street, city, stateOrProvinceCode: stateCode, postalCode, countryCode },
-        }),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok || data.error) {
-        throw new Error(data.error || 'Address validation failed. Please check your details.');
+      // Mark previous steps as complete
+      for (let i = 1; i < stepNum; i++) {
+        document.getElementById('step' + i + '-indicator').classList.add('complete');
       }
 
-      state.accountNumber   = accountNumber;
-      state.customerName    = customerName;
-      state.accountAuthToken = data.accountAuthToken;
-
-      goToStep(2);
-
-    } catch (err) {
-      showAlert(1, err.message);
-    } finally {
-      btn.textContent = 'Continue';
-      btn.classList.remove('loading');
+      clearAlert();
     }
-  }
 
-  // ─── Step 2: Verification Method ──────────────────────────────────────────
-  function selectMethod(method) {
-    state.verifyMethod = method;
-    document.getElementById('card-pin').classList.toggle('selected', method === 'pin');
-    document.getElementById('card-invoice').classList.toggle('selected', method === 'invoice');
-    document.getElementById('pin-form').style.display     = method === 'pin'     ? 'block' : 'none';
-    document.getElementById('invoice-form').style.display = method === 'invoice' ? 'block' : 'none';
-  }
-
-  function selectPinOption(option) {
-    state.pinOption = option;
-    ['SMS', 'CALL', 'EMAIL'].forEach(o => {
-      document.getElementById(`opt-${o.toLowerCase()}`).classList.toggle('selected', o === option);
-    });
-  }
-
-  // ─── PIN Flow ──────────────────────────────────────────────────────────────
-  async function sendPin() {
-    hideAlert(2);
-    const btn = document.getElementById('btn-send-pin');
-    btn.textContent = 'Sending...';
-    btn.classList.add('loading');
-
-    try {
-      const res = await fetch('/api/register/pin-generate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          storeId: state.storeId,
-          accountAuthToken: state.accountAuthToken,
-          option: state.pinOption,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || 'Failed to send PIN. Please try again.');
-
-      document.getElementById('pin-entry').style.display = 'block';
-      btn.style.display = 'none';
-
-    } catch (err) {
-      showAlert(2, err.message);
-    } finally {
-      btn.textContent = 'Send PIN';
-      btn.classList.remove('loading');
+    // Alert helpers
+    function showAlert(message, type = 'error') {
+      const alertArea = document.getElementById('alertArea');
+      alertArea.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      alertArea.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
     }
-  }
 
-  async function verifyPin() {
-    hideAlert(2);
-    const pin = document.getElementById('pin-input').value.trim();
-    if (!pin || pin.length !== 6) return showAlert(2, 'Please enter a valid 6-digit PIN.');
-
-    try {
-      const res = await fetch('/api/register/pin-validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          storeId: state.storeId,
-          accountNumber: state.accountNumber,
-          accountAuthToken: state.accountAuthToken,
-          secureCodePin: pin,
-        }),
-      });
-
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || 'Invalid or expired PIN. Please try again.');
-
-      showSuccess();
-
-    } catch (err) {
-      showAlert(2, err.message);
+    function clearAlert() {
+      document.getElementById('alertArea').innerHTML = '';
     }
-  }
 
-  // ─── Invoice Flow ──────────────────────────────────────────────────────────
-  async function verifyInvoice() {
-    hideAlert(2);
-    const number   = document.getElementById('invoice-number').value.trim();
-    const date     = document.getElementById('invoice-date').value;
-    const amount   = document.getElementById('invoice-amount').value.trim();
+    // Step 1: Address Validation
+    async function validateAddress() {
+      clearAlert();
+      const btn = document.getElementById('step1Btn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>Validating...';
 
-    if (!number || !date || !amount) return showAlert(2, 'Please fill in all invoice fields.');
+      accountData = {
+        storeId,
+        accountNumber: document.getElementById('accountNumber').value.trim(),
+        customerName: document.getElementById('customerName').value.trim(),
+        address: {
+          street: document.getElementById('street').value.trim(),
+          city: document.getElementById('city').value.trim(),
+          stateOrProvinceCode: document.getElementById('state').value.trim().toUpperCase(),
+          postalCode: document.getElementById('postalCode').value.trim(),
+          countryCode: document.getElementById('country').value
+        }
+      };
 
-    try {
-      const res = await fetch('/api/register/invoice-validate', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          storeId: state.storeId,
-          accountNumber: state.accountNumber,
-          accountAuthToken: state.accountAuthToken,
-          invoiceDetail: { number: parseInt(number), date, amount: parseFloat(amount), currency: 'USD' },
-        }),
-      });
+      try {
+        const response = await fetch('/api/register/address', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(accountData)
+        });
 
-      const data = await res.json();
-      if (!res.ok || data.error) throw new Error(data.error || 'Invoice verification failed. Please check your details.');
+        const data = await response.json();
 
-      showSuccess();
-
-    } catch (err) {
-      showAlert(2, err.message);
-    }
-  }
-
-  // ─── Success ───────────────────────────────────────────────────────────────
-  function showSuccess() {
-    const masked = state.accountNumber.replace(/.(?=.{4})/g, '*');
-    document.getElementById('display-account').textContent = masked;
-    document.getElementById('display-name').textContent    = state.customerName;
-    goToStep(3);
-  }
-
-  // ─── Disconnect ────────────────────────────────────────────────────────────
-  async function disconnectAccount() {
-    if (!confirm('Are you sure you want to disconnect your FedEx account? Your store will no longer display shipping rates.')) return;
-
-    await fetch('/api/merchant/disconnect', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ storeId: state.storeId }),
-    });
-
-    goToStep(1);
-    document.getElementById('display-account').textContent = '—';
-    document.getElementById('display-name').textContent = '—';
-  }
-
-  // ─── Init: Check if already connected ─────────────────────────────────────
-  async function init() {
-    if (!state.storeId) return;
-    try {
-      const res  = await fetch(`/api/merchant/status?storeId=${state.storeId}`);
-      const data = await res.json();
-      if (data.connected) {
-        state.accountNumber = data.accountNumber;
-        state.customerName  = data.customerName;
-        showSuccess();
+        if (data.accountAuthToken) {
+          accountAuthToken = data.accountAuthToken;
+          goToStep(2);
+        } else {
+          showAlert(data.error || 'Address validation failed. Please check your details and try again.');
+        }
+      } catch (error) {
+        showAlert('Connection error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Continue to Verification';
       }
-    } catch (e) {
-      // Not connected — stay on step 1
     }
-  }
 
-  init();
-</script>
+    // Step 2: Factor 2 method selection
+    function showMethodForm(method) {
+      document.getElementById('invoiceForm').classList.add('hidden');
+      document.getElementById('pinForm').classList.add('hidden');
+
+      if (method === 'invoice') {
+        document.getElementById('invoiceForm').classList.remove('hidden');
+      } else if (method === 'pin') {
+        document.getElementById('pinForm').classList.remove('hidden');
+      }
+      clearAlert();
+    }
+
+    // Invoice submission
+    async function submitInvoice() {
+      clearAlert();
+      const btn = document.getElementById('invoiceBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>Verifying...';
+
+      const payload = {
+        ...accountData,
+        accountAuthToken,
+        invoiceDetail: {
+          number: document.getElementById('invoiceNumber').value.trim(),
+          currency: document.getElementById('invoiceCurrency').value,
+          amount: document.getElementById('invoiceAmount').value,
+          date: document.getElementById('invoiceDate').value
+        },
+        locale: 'en_US'
+      };
+
+      try {
+        const response = await fetch('/api/register/invoice-validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          goToStep(3);
+        } else {
+          showAlert(data.error || 'Invoice verification failed. Please check your details.');
+        }
+      } catch (error) {
+        showAlert('Connection error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Verify Invoice';
+      }
+    }
+
+    // PIN request
+    async function requestPIN() {
+      const deliveryMethod = document.querySelector('input[name="pinDelivery"]:checked');
+      if (!deliveryMethod) {
+        showAlert('Please select how you'd like to receive your PIN.');
+        return;
+      }
+
+      clearAlert();
+      const btn = document.getElementById('pinRequestBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>Sending PIN...';
+
+      try {
+        const response = await fetch('/api/register/pin-generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            accountAuthToken,
+            option: deliveryMethod.value
+          })
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          document.getElementById('pinDeliverySection').classList.add('hidden');
+          document.getElementById('pinEntrySection').classList.remove('hidden');
+          document.getElementById('pinMethodLabel').textContent = 
+            deliveryMethod.value === 'EMAIL' ? 'email' : 
+            deliveryMethod.value === 'SMS' ? 'phone (SMS)' : 'phone (voice call)';
+        } else {
+          showAlert(data.error || 'Failed to send PIN. Please try again.');
+        }
+      } catch (error) {
+        showAlert('Connection error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Send PIN';
+      }
+    }
+
+    // PIN submission
+    async function submitPIN() {
+      clearAlert();
+      const btn = document.getElementById('pinSubmitBtn');
+      btn.disabled = true;
+      btn.innerHTML = '<span class="loading"></span>Verifying...';
+
+      const payload = {
+        ...accountData,
+        accountAuthToken,
+        secureCodePin: document.getElementById('pinCode').value.trim()
+      };
+
+      try {
+        const response = await fetch('/api/register/pin-validate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const data = await response.json();
+
+        if (data.success) {
+          goToStep(3);
+        } else {
+          showAlert(data.error || 'PIN verification failed. Please check the code and try again.');
+        }
+      } catch (error) {
+        showAlert('Connection error. Please try again.');
+      } finally {
+        btn.disabled = false;
+        btn.innerHTML = 'Verify PIN';
+      }
+    }
+
+    // Reset PIN form to try different method
+    function resetPINForm() {
+      document.getElementById('pinDeliverySection').classList.remove('hidden');
+      document.getElementById('pinEntrySection').classList.add('hidden');
+      document.getElementById('pinCode').value = '';
+      document.querySelectorAll('input[name="pinDelivery"]').forEach(r => r.checked = false);
+      clearAlert();
+    }
+
+    // Check EULA acceptance on page load
+    window.addEventListener('DOMContentLoaded', function() {
+      const eulaAccepted = localStorage.getItem('ta_fedex_eula_accepted');
+      if (!eulaAccepted) {
+        window.location.href = '/eula.html';
+      }
+    });
+  </script>
 </body>
 </html>

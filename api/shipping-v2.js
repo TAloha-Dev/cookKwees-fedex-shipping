@@ -7,8 +7,6 @@ const { getMerchant }      = require("../lib/db");
 const { getMerchantToken } = require("../lib/fedex-auth");
 
 // ─── Config ────────────────────────────────────────────────────────────────────
-// Phase 2: Expanded service list. FedEx returns rates only for services
-// the merchant's account actually supports — extra entries here are safe.
 const ALLOWED_SERVICES = new Set([
   "FEDEX_GROUND",
   "GROUND_HOME_DELIVERY",
@@ -50,9 +48,6 @@ module.exports = async (req, res) => {
     return res.status(405).json({ error: "Method not allowed" });
   }
 
-  // Identify the merchant via query string.
-  // Ecwid app installation will register each merchant's unique shipping URL
-  // with their storeId as a query param.
   const { storeId } = req.query;
   if (!storeId) {
     console.error("Missing storeId in query params");
@@ -63,8 +58,6 @@ module.exports = async (req, res) => {
     const { id, cart } = req.body;
     const { shippingAddress, originAddress, weight } = cart;
 
-    // Skip FedEx call if address is incomplete (Ecwid calls this
-    // endpoint multiple times as the customer types their address)
     if (!isCompleteAddress(shippingAddress)) {
       console.log(`[${storeId}] Incomplete shipping address — skipping FedEx call`);
       return res.status(200).json({ id, shippingOptions: [] });
@@ -89,7 +82,7 @@ module.exports = async (req, res) => {
       countryCode:         originAddress?.countryCode || "US",
     };
 
-    // Build FedEx rate request (using merchant's own FedEx account number)
+    // Build FedEx Comprehensive Rate request
     const rateRequest = {
       accountNumber: { value: merchant.accountNumber },
       requestedShipment: {
@@ -111,20 +104,12 @@ module.exports = async (req, res) => {
         ],
         pickupType:      "USE_SCHEDULED_PICKUP",
         rateRequestType: ["ACCOUNT"],
-        shippingChargesPayment: {
-          paymentType: "SENDER",
-          payor: {
-            responsibleParty: {
-              accountNumber: { value: merchant.accountNumber },
-            },
-          },
-        },
       },
     };
 
-    // Call FedEx Rates and Transit Times API
+    // Call FedEx Comprehensive Rates API (per FedEx Validation Team guidance)
     const rateResponse = await axios.post(
-      `${process.env.TALOHA_FEDEX_BASE_URL}/rate/v1/rates/quotes`,
+      `${process.env.TALOHA_FEDEX_BASE_URL}/rate/v1/comprehensiverates/quotes`,
       rateRequest,
       {
         headers: {
@@ -153,7 +138,7 @@ module.exports = async (req, res) => {
       });
     }
 
-    console.log(`[${storeId}] Shipping options returned:`, JSON.stringify(shippingOptions));
+    console.log(`[${storeId}] Comprehensive Rates returned ${shippingOptions.length} options`);
     return res.status(200).json({ id, shippingOptions });
 
   } catch (error) {
@@ -161,7 +146,6 @@ module.exports = async (req, res) => {
       `[${storeId}] FedEx API error:`,
       JSON.stringify(error.response?.data || error.message, null, 2)
     );
-    // Always return empty options on error (don't break Ecwid checkout)
     return res.status(200).json({
       id: req.body?.id,
       shippingOptions: [],

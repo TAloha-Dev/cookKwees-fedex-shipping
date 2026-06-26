@@ -5,222 +5,39 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FedEx End User License Agreement | TAloha Shipping</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-      background: #f5f5f5;
-      padding: 20px;
-    }
-
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-      background: white;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      overflow: hidden;
-    }
-
-    .header {
-      background: #4A148C;
-      color: white;
-      padding: 24px 32px;
-    }
-
-    .header h1 {
-      font-size: 24px;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-
-    .header p {
-      font-size: 14px;
-      opacity: 0.9;
-    }
-
-    .eula-container {
-      padding: 32px;
-    }
-
-    .eula-scroll-box {
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      height: 500px;
-      overflow-y: scroll;
-      padding: 32px;
-      background: #fafafa;
-      margin-bottom: 24px;
-      position: relative;
-    }
-
-    .eula-content {
-      line-height: 1.7;
-      color: #333;
-      font-size: 14px;
-    }
-
-    .eula-content h2 {
-      font-size: 18px;
-      margin: 28px 0 14px 0;
-      color: #4A148C;
-      font-weight: 600;
-    }
-
-    .eula-content h2:first-child {
-      margin-top: 0;
-    }
-
-    .eula-content h3 {
-      font-size: 16px;
-      margin: 20px 0 12px 0;
-      color: #000;
-      font-weight: 600;
-    }
-
-    .eula-content p {
-      margin-bottom: 16px;
-    }
-
-    .eula-content strong {
-      font-weight: 600;
-      color: #000;
-    }
-
-    .eula-content ul {
-      margin: 12px 0 16px 24px;
-      list-style-type: disc;
-    }
-
-    .eula-content ul ul {
-      margin-top: 8px;
-      list-style-type: circle;
-    }
-
-    .eula-content li {
-      margin-bottom: 8px;
-    }
-
-    .version-footer {
-      text-align: center;
-      margin-top: 32px;
-      padding-top: 16px;
-      border-top: 1px solid #ddd;
-      font-size: 13px;
-      color: #666;
-      font-style: italic;
-    }
-
-    .scroll-indicator {
-      position: sticky;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: linear-gradient(to top, rgba(250,250,250,1) 50%, rgba(250,250,250,0));
-      padding: 16px 0 8px 0;
-      text-align: center;
-      font-size: 14px;
-      color: #666;
-      pointer-events: none;
-    }
-
-    .acceptance-section {
-      border-top: 1px solid #eee;
-      padding-top: 24px;
-    }
-
-    .checkbox-container {
-      display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      margin-bottom: 24px;
-    }
-
-    .checkbox-container input[type="checkbox"] {
-      margin-top: 4px;
-      width: 20px;
-      height: 20px;
-      cursor: pointer;
-    }
-
-    .checkbox-container input[type="checkbox"]:disabled {
-      cursor: not-allowed;
-      opacity: 0.4;
-    }
-
-    .checkbox-container label {
-      font-size: 16px;
-      line-height: 1.5;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .checkbox-container label.disabled {
-      cursor: not-allowed;
-      opacity: 0.6;
-    }
-
-    .button-container {
-      display: flex;
-      gap: 16px;
-    }
-
-    button {
-      padding: 12px 32px;
-      font-size: 16px;
-      font-weight: 600;
-      border-radius: 4px;
-      border: none;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-
-    .btn-primary {
-      background: #FF6D00;
-      color: white;
-    }
-
-    .btn-primary:hover:not(:disabled) {
-      background: #F4511E;
-    }
-
-    .btn-primary:disabled {
-      background: #ccc;
-      cursor: not-allowed;
-    }
-
-    .btn-secondary {
-      background: white;
-      color: #666;
-      border: 1px solid #ddd;
-    }
-
-    .btn-secondary:hover {
-      background: #f5f5f5;
-    }
-
-    .fedex-disclaimer {
-      margin-top: 32px;
-      padding-top: 24px;
-      border-top: 1px solid #eee;
-      font-size: 12px;
-      color: #666;
-      text-align: center;
-    }
-
-    .scroll-prompt {
-      background: #FFF3E0;
-      border-left: 4px solid #FF6D00;
-      padding: 12px 16px;
-      margin-bottom: 24px;
-      border-radius: 4px;
-      font-size: 14px;
-      color: #E65100;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { max-width: 900px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: #4A148C; color: white; padding: 24px 32px; }
+    .header h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+    .header p { font-size: 14px; opacity: 0.9; }
+    .eula-container { padding: 32px; }
+    .eula-scroll-box { border: 1px solid #ddd; border-radius: 4px; height: 500px; overflow-y: scroll; padding: 32px; background: #fafafa; margin-bottom: 24px; position: relative; }
+    .eula-content { line-height: 1.7; color: #333; font-size: 14px; }
+    .eula-content h2 { font-size: 18px; margin: 28px 0 14px 0; color: #4A148C; font-weight: 600; }
+    .eula-content h2:first-child { margin-top: 0; }
+    .eula-content h3 { font-size: 16px; margin: 20px 0 12px 0; color: #000; font-weight: 600; }
+    .eula-content p { margin-bottom: 16px; }
+    .eula-content strong { font-weight: 600; color: #000; }
+    .eula-content ul { margin: 12px 0 16px 24px; list-style-type: disc; }
+    .eula-content li { margin-bottom: 8px; }
+    .version-footer { text-align: center; margin-top: 32px; padding-top: 16px; border-top: 1px solid #ddd; font-size: 13px; color: #666; font-style: italic; }
+    .scroll-indicator { position: sticky; bottom: 0; background: linear-gradient(to top, rgba(250,250,250,1) 50%, rgba(250,250,250,0)); padding: 16px 0 8px 0; text-align: center; font-size: 14px; color: #666; pointer-events: none; }
+    .acceptance-section { border-top: 1px solid #eee; padding-top: 24px; }
+    .checkbox-container { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 24px; }
+    .checkbox-container input[type="checkbox"] { margin-top: 4px; width: 20px; height: 20px; cursor: pointer; }
+    .checkbox-container input[type="checkbox"]:disabled { cursor: not-allowed; opacity: 0.4; }
+    .checkbox-container label { font-size: 16px; line-height: 1.5; cursor: pointer; user-select: none; }
+    .checkbox-container label.disabled { cursor: not-allowed; opacity: 0.6; }
+    .button-container { display: flex; gap: 16px; }
+    button { padding: 12px 32px; font-size: 16px; font-weight: 600; border-radius: 4px; border: none; cursor: pointer; transition: all 0.2s; }
+    .btn-primary { background: #FF6D00; color: white; }
+    .btn-primary:hover:not(:disabled) { background: #F4511E; }
+    .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+    .btn-secondary { background: white; color: #666; border: 1px solid #ddd; }
+    .btn-secondary:hover { background: #f5f5f5; }
+    .fedex-disclaimer { margin-top: 32px; padding-top: 24px; border-top: 1px solid #eee; font-size: 12px; color: #666; text-align: center; }
+    .scroll-prompt { background: #FFF3E0; border-left: 4px solid #FF6D00; padding: 12px 16px; margin-bottom: 24px; border-radius: 4px; font-size: 14px; color: #E65100; }
   </style>
 </head>
 <body>
@@ -237,167 +54,118 @@
 
       <div class="eula-scroll-box" id="eulaBox">
         <div class="eula-content">
-          
+
           <h2>FedEx End User License Agreement</h2>
-          
           <p><strong>Version number:</strong> v1.0<br>
           <strong>Version change date:</strong> 09/17/2022</p>
 
           <p><strong>THIS FEDEX END USER LICENSE AGREEMENT ("EULA") GIVES EACH OF US CERTAIN RIGHTS AND RESPONSIBILITIES. THIS EULA INCORPORATES, BY REFERENCE, OTHER TERMS AND CONDITIONS, POLICIES AND NOTICES TO FORM THE AGREEMENT (AS DEFINED BELOW).</strong></p>
-
           <p><strong>YOU WILL BE LIMITING YOUR REMEDIES BY AGREEING TO THE AGREEMENT.</strong></p>
-
           <p><strong>YOU WILL BE ASSUMING FULL AND SOLE RESPONSIBILITY FOR ALL ACCESS AND USE OF THE FEDEX TECHNOLOGY AND CONFIDENTIAL INFORMATION (EACH OF THOSE TERMS ARE DEFINED BELOW).</strong></p>
-
           <p><strong>ALL ACCESS TO AND USE OF FEDEX TECHNOLOGY IS AT YOUR OWN AND SOLE COST, EXPENSE AND RISK.</strong></p>
-
           <p><strong>PLEASE READ THE AGREEMENT CAREFULLY.</strong></p>
-
           <p>THE AGREEMENT GOVERNS THE USE OF FEDEX TECHNOLOGY AVAILABLE THROUGH THE APPLICATION (AS DEFINED BELOW). IN ORDER TO ACCESS AND USE THE FEDEX TECHNOLOGY, YOU MUST AGREE TO AND ABIDE BY THE AGREEMENT.</p>
-
           <p>THE CONSENT TO BE BOUND BY THE AGREEMENT (AND ANY MODIFICATION TO THE AGREEMENT) IS ACKNOWLEDGED BY CLICKING THE "I ACCEPT" OR "ADD ACCOUNT" BUTTON SET FORTH BELOW. IF YOU ARE ENTERING INTO THE AGREEMENT ON BEHALF OF A COMPANY OR OTHER LEGAL ENTITY, YOU REPRESENT THAT YOU HAVE THE LEGAL AUTHORITY TO BIND SUCH LEGAL ENTITY AND, IF APPLICABLE, ITS AFFILIATES, TO THE AGREEMENT.</p>
-
           <p>ONCE ACKNOWLEDGED, THIS DOCUMENT WILL CONSTITUTE A LEGAL AGREEMENT BETWEEN FEDEX (AS DEFINED BELOW) AND YOU (AS DEFINED BELOW) GOVERNING ACCESS TO AND USE OF FEDEX TECHNOLOGY MADE AVAILABLE OR ACCESSED VIA THE APPLICATION.</p>
-
           <p>IF YOU DO NOT HAVE SUCH AUTHORITY, OR IF YOU DO NOT AGREE WITH THE TERMS AND CONDITIONS OF THE AGREEMENT, YOU MUST SELECT THE "I DECLINE" OR "BACK" BUTTON AND YOU MAY NOT ACCESS OR USE THE FEDEX TECHNOLOGY MADE AVAILABLE VIA THE APPLICATION AND WILL NOT BE AUTHORIZED TO ACCESS OR USE THE FEDEX TECHNOLOGY OR THE FEDEX SERVICES (AS DEFINED BELOW) AVAILABLE THROUGH THE APPLICATION.</p>
-
           <p>PLEASE NOTE THAT ACCESS TO SOME ELEMENTS OF THE FEDEX TECHNOLOGY OR FEDEX SERVICES MAY REQUIRE FURTHER REGISTRATION PROCESS(ES). ADDITIONAL ACCESS AND USAGE PERMISSIONS WILL BE PROVIDED, BY FEDEX IN ITS SOLE DISCRETION, ONLY UPON COMPLETION OF ADDITIONAL REGISTRATION PROCESS(ES), AS APPLICABLE.</p>
-
           <p><strong>A COPY OF THIS EULA SHOULD BE PRINTED AND RETAINED FOR FUTURE REFERENCE</strong></p>
-
           <p>For good and valuable consideration of the mutual promises and obligations set out below, the sufficiency of which the Parties hereby acknowledge and confirm, FedEx and You acknowledge and agree as follows:</p>
 
           <h3>Key Definitions</h3>
-
-          <p><strong>(a) "Agreement"</strong> will mean the then current version of: (1) the terms and conditions set forth in the EULA (2) all other terms and conditions applicable to FedEx APIs (as defined below) including, those terms and conditions contained in or presented in connection with all manuals, policies, procedures or other materials provided by FedEx which are applicable to APIs); (3) the terms and conditions at www.fedex.com and www.fedexoffice.com; and, (4) applicable FedEx privacy policy and/or privacy notice, a copy of which is available by request or by download in Your country or territory of choice at www.fedex.com, which is supplementary to, and shall be read together with, the FedEx Global Privacy Policy and Privacy Notice, available here. Any and all of the foregoing may be updated, revised, replaced, supplemented or otherwise modified by FedEx or its affiliates in its sole discretion at any time and such modification will be effective when FedEx posts a revised version at the URL address of the prior terms and conditions (or, such other URL address as FedEx may indicate at the URL address of the prior terms and conditions).</p>
-
+          <p><strong>(a) "Agreement"</strong> will mean the then current version of: (1) the terms and conditions set forth in the EULA (2) all other terms and conditions applicable to FedEx APIs (as defined below) including, those terms and conditions contained in or presented in connection with all manuals, policies, procedures or other materials provided by FedEx which are applicable to APIs); (3) the terms and conditions at www.fedex.com and www.fedexoffice.com; and, (4) applicable FedEx privacy policy and/or privacy notice, a copy of which is available by request or by download in Your country or territory of choice at www.fedex.com, which is supplementary to, and shall be read together with, the FedEx Global Privacy Policy and Privacy Notice, available here. Any and all of the foregoing may be updated, revised, replaced, supplemented or otherwise modified by FedEx or its affiliates in its sole discretion at any time and such modification will be effective when FedEx posts a revised version at the URL address of the prior terms and conditions.</p>
           <p><strong>(b) "Application"</strong> means software program(s) created or licensed by You that utilize FedEx Technology in order for You to request FedEx Services.</p>
-
           <p><strong>(c) "Application Provider"</strong> means You or the licensor or provider of the Application to You.</p>
-
           <p><strong>(d) "FedEx"</strong> means (i) FedEx Corporate Services, Inc., if You are located, and access and use the Application, within the United States of America ("USA") when You initially execute this EULA; and, (ii) Federal Express Corporation if You are located, or access or use the Application, outside of the USA.</p>
-
           <p><strong>(e) "FedEx APIs" or "APIs"</strong> means those application programing interfaces made available by FedEx which, via an Application, facilitate the request of FedEx Services by You.</p>
-
           <p><strong>(f) "FedEx Services"</strong> means shipping or print services (or services relating to shipping or print services) offered, from time to time, by FedEx or its affiliates as such services are described in the applicable Service Offering.</p>
-
           <p><strong>(g) "FedEx Technology"</strong> means each of the following (both individually and collectively): the FedEx APIs, FedEx Systems, Materials, and Beta Materials.</p>
-
-          <p><strong>(h) "You"</strong> means (i) the person executing this EULA, if done in a personal capacity; and, (ii) if done in Your professional capacity, any company or other legal entity (e.g., sole proprietorship, partnership, corporation, limited liability company, etc.), all as indicated in the account and registration information that You provide when registering for your FedEx account number. In no event does "You" include a FedEx Competitor even if such FedEx Competitor otherwise qualifies as "You" under this definition. "Your" is the possessive of "You."</p>
+          <p><strong>(h) "You"</strong> means (i) the person executing this EULA, if done in a personal capacity; and, (ii) if done in Your professional capacity, any company or other legal entity, all as indicated in the account and registration information that You provide when registering for your FedEx account number. In no event does "You" include a FedEx Competitor. "Your" is the possessive of "You."</p>
 
           <h2>Section 1. License Grant and Restrictions</h2>
-
-          <p>(a) Subject to the terms and conditions of the Agreement, FedEx grants You a non-exclusive, royalty-free, non-assignable, non-transferable, limited, revocable license, without the right to grant sublicenses, solely to (i) access and use those Materials integrated into and made accessible to You as a part of the Application (and solely as such Materials are integrated into the Application) solely to access FedEx APIs and request available FedEx Services (which may include, as the case may be, functionality enabling You to label, rate, route, record, track and invoice shipments tendered to FedEx or its affiliates for carriage on behalf of You); (ii) allow Your retail customers to remotely access and use those Materials integrated into and made accessible to You as a part of the Application (and solely as such Materials are integrated into the Application) for the sole purpose of conducting e-commerce transactions with You that utilize FedEx Services but solely FedEx Services occurring under Your FedEx account number(s); and, (iii) access and use those Beta Materials integrated into and made accessible to You as a part of an Application (and solely as such Beta Materials are integrated into the Application) solely to access FedEx APIs for test and development purposes. FedEx Technology is not licensed for any other purpose(s), express or implied, whatsoever. For the avoidance of doubt, access and use by retail customers does not extend to third party shippers or resellers or consolidators of shipping or shipping related services. Except as may be expressly permitted by a separate written agreement between FedEx and You, use of FedEx Technology to perform or order FedEx Services by or for the benefit of such parties is prohibited.</p>
-
+          <p>(a) Subject to the terms and conditions of the Agreement, FedEx grants You a non-exclusive, royalty-free, non-assignable, non-transferable, limited, revocable license, without the right to grant sublicenses, solely to (i) access and use those Materials integrated into and made accessible to You as a part of the Application solely to access FedEx APIs and request available FedEx Services; (ii) allow Your retail customers to remotely access and use those Materials integrated into and made accessible to You as a part of the Application for the sole purpose of conducting e-commerce transactions with You that utilize FedEx Services but solely FedEx Services occurring under Your FedEx account number(s); and, (iii) access and use those Beta Materials integrated into and made accessible to You as a part of an Application solely to access FedEx APIs for test and development purposes. FedEx Technology is not licensed for any other purpose(s), express or implied, whatsoever.</p>
           <p>(b) <strong>Restrictions.</strong> The license does not permit, and You will not (and will not permit any employee or other third party to) reverse engineer, decompile, disassemble, or translate FedEx Technology; apply any procedure or process to FedEx Technology in order to ascertain, derive, and/or appropriate for any reason or purpose, the source code or source listings for FedEx Technology or any trade secret or confidential information or process contained in FedEx Technology; remove any product identification, trademark, confidentiality, proprietary, copyright or other legends or notices from FedEx Technology or Confidential Information.</p>
-
-          <p>(c) As between You and FedEx, all worldwide rights, title and interests, including, intellectual property and other proprietary rights, in and to any FedEx Technology (including, any derivative works thereof), are owned solely and exclusively by FedEx. FedEx is not selling or otherwise transferring title in any FedEx Technology to You. You will not take any action inconsistent with FedEx's interest in any FedEx Technology. Except for the express licenses granted in this EULA, FedEx reserves all right, title and interest, including all intellectual property and other proprietary rights, in and to FedEx Technology (including, any derivative works thereof).</p>
+          <p>(c) As between You and FedEx, all worldwide rights, title and interests, including, intellectual property and other proprietary rights, in and to any FedEx Technology (including, any derivative works thereof), are owned solely and exclusively by FedEx. Except for the express licenses granted in this EULA, FedEx reserves all right, title and interest, including all intellectual property and other proprietary rights, in and to FedEx Technology.</p>
 
           <h2>Section 2. Use and Support of FedEx Technology</h2>
-
-          <p>(a) You will follow FedEx's instructions, including those provided in FedEx Technology and/or documentation, provided from time to time, for access and use of FedEx Technology. You are solely responsible for providing and maintaining all hardware necessary to access and use the Application, including FedEx Technology. Access to the internet is required to utilize FedEx Technology. You are solely responsible for obtaining access to the internet.</p>
-
-          <p>(b) FedEx, in its sole discretion, may repair, modify, replace or remove the Materials, or other FedEx Technology, in the event of any issues with the Application ("Limited Support Services"). Except for such Limited Support Services, FedEx does not commit to provide any maintenance or support regarding FedEx Technology. Questions, issues or concerns regarding FedEx Technology should be registered at: developer.fedex.com (or such other URL as FedEx may designate, from time to time).</p>
-
-          <p>(c) The Application and services (e.g., maintenance, support, hosting, etc.) related to the Application are not provided by FedEx or its affiliates. It is Your sole responsibility to arrange with the Application Provider for any and all warranties, maintenance, support, and any other requirements and remedies arising out of Your access and use of the Application. Therefore, You waive any and all claims against FedEx and its affiliates arising from or relating to Your access to or use of (or inability to access or use) the Application or the other services provided by the Application Provider.</p>
+          <p>(a) You will follow FedEx's instructions, including those provided in FedEx Technology and/or documentation, provided from time to time, for access and use of FedEx Technology. You are solely responsible for providing and maintaining all hardware necessary to access and use the Application, including FedEx Technology. Access to the internet is required to utilize FedEx Technology.</p>
+          <p>(b) FedEx, in its sole discretion, may repair, modify, replace or remove the Materials, or other FedEx Technology, in the event of any issues with the Application ("Limited Support Services"). Except for such Limited Support Services, FedEx does not commit to provide any maintenance or support regarding FedEx Technology. Questions, issues or concerns regarding FedEx Technology should be registered at: developer.fedex.com.</p>
+          <p>(c) The Application and services related to the Application are not provided by FedEx or its affiliates. It is Your sole responsibility to arrange with the Application Provider for any and all warranties, maintenance, support, and any other requirements and remedies arising out of Your access and use of the Application. Therefore, You waive any and all claims against FedEx and its affiliates arising from or relating to Your access to or use of the Application or the other services provided by the Application Provider.</p>
 
           <h2>Section 3. Termination</h2>
+          <p>This EULA, and the Agreement, is effective until terminated by either party. The Agreement will terminate independently without notice to You if You fail to comply with any provision of the Agreement or any instructions regarding FedEx Technology. FedEx reserves the right to unilaterally terminate the Agreement and access to and use of FedEx Technology at any time and for any or no reason, upon notice to You. You may terminate the Agreement at any time and for any or no reason upon thirty (30) days written notice to FedEx. Upon termination, all licenses granted by the Agreement will terminate immediately. Upon termination, You must: (i) cease all access to and use of any FedEx Technology and other Confidential Information and destroy all copies thereof; and, (ii) upon instruction of FedEx, remove any and all Materials from Your Application.</p>
 
-          <p>This EULA, and the Agreement, is effective until terminated by either party. The Agreement will terminate independently without notice to You if You fail to comply with any provision of the Agreement or any instructions regarding FedEx Technology. FedEx reserves the right to unilaterally terminate the Agreement and access to and use of FedEx Technology and any services offered through FedEx Technology, at any time and for any or no reason, upon notice to You. Such termination will not be a breach of the Agreement. FedEx will have no liability for termination of the Agreement pursuant to this provision. You may terminate the Agreement at any time and for any or no reason upon thirty (30) days written notice to FedEx. Upon termination, all licenses granted by the Agreement will terminate immediately. Upon termination, You must: (i) cease all access to and use of any FedEx Technology and other Confidential Information and destroy all copies thereof made by You in connection with Your use of the Application; and, (ii) upon instruction of FedEx, in its sole discretion, remove any and all Materials from Your Application.</p>
-
-          <h2>Section 4. Payment</h2>
-
-          <p>To the extent applicable to the FedEx Services available to You through the Application, You agree to remit payment, in accordance with the terms and conditions contained in the applicable Service Offering, or as otherwise instructed by FedEx, for all invoices generated as a result of using FedEx Technology and to reference the invoice number when payment is remitted. You are responsible for payment of all charges generated through use of the Application under Your account number and registration number.</p>
+          <h2>Section 4. Terms and Conditions of Carriage</h2>
+          <p>(a) You agree that domestic and international carriage by FedEx of any shipments tendered to FedEx using the Application shall be in accordance with the terms, conditions and limitations of liability set out on the NONNEGOTIABLE Air Waybill, Label, Manifest, or Pick-Up Record (collectively "Shipping Documentation") and as appropriate any transportation agreement between You and FedEx covering such shipment and in any applicable tariff, Service Offerings or Standard Conditions of Carriage, copies of which are available upon request, and which are incorporated into this EULA by reference. If there is a conflict between the Shipping Documentation and any such document then in effect or the Agreement, the transportation agreement, tariff, Service Guide, Standard Conditions of Carriage, or the Agreement will control, in that order of priority.</p>
+          <p>(b) In the event You use the Application to process shipments tendered to FedEx for delivery to locations outside the United States or country of shipment origin, You will, at Your sole expense, assure that the terms and conditions of international carriage supplied by FedEx from time to time are placed on the Shipping Documentation, as instructed by FedEx, for all such international shipments.</p>
+          <p>(c) You acknowledge that if the Application is used to process shipments to locations outside the United States or other country or territory of shipment origin, You must enter the name of the person completing the Shipping Documentation to print in lieu of such person's manual or script signature on the Shipping Documentation, as applicable, for all shipments tendered by You to FedEx using the Application.</p>
+          <p>(d) You hereby certify that all statements and information contained on all Air Waybills, SEDs and accompanying documentation relating to exportation are true and correct.</p>
+          <p>(e) You are responsible for, and warrant your compliance with, Export Control Laws provisions in the Service Guide and Section 20 below.</p>
+          <p>(f) Unless otherwise indicated, the shipper's address indicated on the face of any Shipping Documentation is the place of execution and the place of departure and the recipient's address listed on the face of the Shipping Documentation is the place of destination. Unless otherwise indicated on the face of the Shipping Documentation the first carrier of all shipments is FedEx Express, P.O. Box 727, Memphis, TN 38194. The address for FedEx Ground is P.O. Box 108, Coraopolis, PA 15230.</p>
 
           <h2>Section 5. Electronic Trade Documents</h2>
+          <p><strong>(a) Agreement to Use Electronic Trade Documents Instead of Printed Documents.</strong> By utilizing FedEx® Electronic Trade Documents, You authorize FedEx to ship Your international shipments using electronic documents instead of printed documents, including but not limited to the applicable commercial invoice, pro forma invoice, and export certificate of origin.</p>
+          <p><strong>(b) Agreement to Provide Information, Letterhead and Signature Image.</strong> By utilizing FedEx® Electronic Trade Documents, You agree to provide FedEx with all information necessary to ship Your international packages, including but not limited to package level detail information, Your company letterhead and a signature image for You or an authorized representative of Your company.</p>
+          <p><strong>(c) Accuracy of Information.</strong> You represent, warrant and covenant that any information provided by You to FedEx shall be true, accurate and complete.</p>
+          <p><strong>(d) Validity of Letterhead.</strong> You represent, warrant and covenant that the letterhead provided by You to FedEx for use in executing electronic trade documents on Your behalf shall be a valid letterhead and that You possess the necessary right, title and interest in the letterhead to authorize FedEx to use the letterhead to execute electronic trade documents on Your behalf.</p>
+          <p><strong>(e) Validity of Signature Image.</strong> You represent, warrant and covenant that any signature image provided by You to FedEx for use in executing electronic trade documents on Your behalf shall be of a valid signature by a person authorized by You or Your company to ship with FedEx and execute shipping-related documents on Your company's behalf, and shall be sufficient to constitute Your signature.</p>
 
-<p><strong>Agreement to Use Electronic Trade Documents Instead of Printed Documents.</strong> By utilizing FedEx® Electronic Trade Documents, You authorize FedEx to ship Your international shipments using electronic documents instead of printed documents, including but not limited to the applicable commercial invoice, pro forma invoice, and export certificate of origin.</p>
+          <h2>Section 6. Payment</h2>
+          <p>To the extent applicable to the FedEx Services available to You through the Application, You agree to remit payment, in accordance with the terms and conditions contained in the applicable Service Offering, or as otherwise instructed by FedEx, for all invoices generated as a result of using FedEx Technology and to reference the invoice number when payment is remitted. You are responsible for payment of all charges generated through use of the Application under Your account number and registration number.</p>
 
-<p><strong>(b) Agreement to Provide Information, Letterhead and Signature Image.</strong> By utilizing FedEx® Electronic Trade Documents, You agree to provide FedEx with all information necessary to ship Your international packages, including but not limited to package level detail information, Your company letterhead and a signature image for You or an authorized representative of Your company.</p>
+          <h2>Section 7. Billing and Refunds</h2>
+          <p>To the extent applicable to the FedEx Services available to You through the Application, You may bill shipping charges for transactions conducted through FedEx Technology only to valid account numbers (i.e., bill sender, bill recipient or bill third party). Shipments tendered to FedEx with incorrect routing, labeling, commitment date, service designation or other errors through no fault of FedEx will not be eligible for refunds under FedEx's money-back guarantees. Refunds requested by You with respect to any shipment must be made in accordance with the applicable Service Offerings. You will not be entitled to any refund or credit under FedEx's money-back guarantees if FedEx determines that the claim resulted from improper use of FedEx Technology.</p>
 
-<p><strong>(c) Accuracy of Information.</strong> You represent, warrant and covenant that any information provided by You to FedEx shall be true, accurate and complete.</p>
-
-<p><strong>(d) Validity of Letterhead.</strong> You represent, warrant and covenant that the letterhead provided by You to FedEx for use in executing electronic trade documents on Your behalf shall be a valid letterhead and that You possess the necessary right, title and interest in the letterhead to authorize FedEx to use the letterhead to execute electronic trade documents on Your behalf.</p>
-
-<p><strong>(e) Validity of Signature Image.</strong> You represent, warrant and covenant that any signature image provided by You to FedEx for use in executing electronic trade documents on Your behalf shall be of a valid signature by a person authorized by You or Your company to ship with FedEx and execute shipping-related documents on Your company's behalf, and shall be sufficient to constitute Your signature.</p>
-
-<h2>Section 6. Payment</h2>
-
-<p>To the extent applicable to the FedEx Services available to You through the Application, You agree to remit payment, in accordance with the terms and conditions contained in the applicable Service Offering, or as otherwise instructed by FedEx, for all invoices generated as a result of using FedEx Technology and to reference the invoice number when payment is remitted. You are responsible for payment of all charges generated through use of the Application under Your account number and registration number.</p>
-
-<h2>Section 7. Billing and Refunds</h2>
-
-<p>To the extent applicable to the FedEx Services available to You through the Application, You may bill shipping charges for transactions conducted through FedEx Technology only to valid account numbers (i.e., bill sender, bill recipient or bill third party). To the extent applicable to the FedEx Services available to You through the Application, shipments tendered to FedEx with incorrect routing, labeling, commitment date, service designation or other errors through no fault of FedEx will not be eligible for refunds under FedEx's money-back guarantees. Refunds requested by You with respect to any shipment must be made in accordance with the applicable Service Offerings. You will not be entitled to any refund or credit under FedEx's money-back guarantees if FedEx determines that the claim resulted from improper use of FedEx Technology. FedEx, in its sole discretion, may suspend its money-back guarantees in the event FedEx Technology or the Application fails or is inoperable for any reason.</p>
-
-<h2>Section 8. Downtime and Service Suspensions</h2>
-
-<p><strong>(a)</strong> From time to time, access to and use of FedEx Technology may not be available. FedEx does not make any service level or uptime commitments regarding FedEx Technology. FedEx will be entitled, without any liability to You, to suspend access to any portion or all of FedEx Technology at any time: (a) for scheduled downtime to permit FedEx to conduct maintenance or make modifications to any portion of the FedEx Technology; (b) in the event of a denial of service attack or other attack on any FedEx Technology; (c) in the event that FedEx determines that any portion of FedEx Technology is prohibited by law or FedEx otherwise determines that it is necessary or prudent to do so for legal or regulatory reasons; (d) any unanticipated or unscheduled downtime or unavailability for any reason, including as a result of power outages, system failures or other interruptions; or, (e) or any other event that FedEx determines, in its sole discretion, may create a risk to any FedEx Technology, to You or to any other FedEx customer(s) if access to FedEx Technology is not suspended.</p>
-
-<p><strong>(b)</strong> FedEx may make changes to FedEx Technology or discontinue FedEx Technology or portion or feature(s) of FedEx Technology from time to time. Such changes may impact Your ability to access or use the FedEx Technology. You may need to modify, at Your own expense, the Application and other of Your systems in order to continue using FedEx Technology. FedEx will announce a material change or discontinuance of FedEx Technology that You are using. FedEx will use commercially reasonable efforts to continue to provide the FedEx Technology in accordance with the FedEx API Versioning and Throttling Guide.</p>
+          <h2>Section 8. Downtime and Service Suspensions</h2>
+          <p>(a) From time to time, access to and use of FedEx Technology may not be available. FedEx does not make any service level or uptime commitments regarding FedEx Technology. FedEx will be entitled, without any liability to You, to suspend access to any portion or all of FedEx Technology at any time: (a) for scheduled downtime to permit FedEx to conduct maintenance or make modifications; (b) in the event of a denial of service attack or other attack on any FedEx Technology; (c) in the event that FedEx determines that any portion of FedEx Technology is prohibited by law; (d) any unanticipated or unscheduled downtime or unavailability for any reason; or, (e) any other event that FedEx determines may create a risk to any FedEx Technology. FedEx will have no liability whatsoever for any damage, liabilities, losses or any other consequences that You may incur as a result of any Service Suspension.</p>
+          <p>(b) FedEx may make changes to FedEx Technology or discontinue FedEx Technology or portion or feature(s) of FedEx Technology from time to time. Such changes may impact Your ability to access or use the FedEx Technology. You may need to modify, at Your own expense, the Application and other of Your systems in order to continue using FedEx Technology. FedEx will announce a material change or discontinuance of FedEx Technology that You are using and will use commercially reasonable efforts to continue to provide the FedEx Technology in accordance with the FedEx API Versioning and Throttling Guide.</p>
 
           <h2>Section 9. Disclaimer of Warranty</h2>
-
           <p><strong>YOU EXPRESSLY ACKNOWLEDGE AND AGREE FEDEX IS NEITHER PROVIDING THE APPLICATION NOR CHARGING YOU A FEE FOR ACCESS TO OR USE OF FEDEX TECHNOLOGY. FEDEX TECHNOLOGY IS PROVIDED "AS-IS" AND WITHOUT WARRANTY OF ANY KIND. YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT FEDEX TECHNOLOGY, INCLUDING ANY SERVICES OR INFORMATION (E.G., WEBHOOKS UPDATES) OFFERED THROUGH FEDEX TECHNOLOGY, ARE PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES OF ANY KIND. TO THE EXTENT PERMITTED BY APPLICABLE LAW, FEDEX AND ITS REPRESENTATIVES, DISCLAIM AND EXCLUDE ALL WARRANTIES, CONDITIONS OR REPRESENTATIONS WHETHER, EXPRESS, STATUTORY, OR IMPLIED, INCLUDING THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE, AND THE WARRANTIES OF NON-INFRINGEMENT OR QUIET ENJOYMENT. FEDEX DOES NOT WARRANT THAT (A) FEDEX TECHNOLOGY WILL MEET ANY OR ALL OF YOUR REQUIREMENTS; (B) OPERATIONS WILL BE UNINTERRUPTED OR ERROR FREE; (C) ANY DEFECT WITHIN FEDEX TECHNOLOGY OR ANY SERVICES OR INFORMATION OFFERED THROUGH FEDEX TECHNOLOGY WILL BE CORRECTED; OR (D) FEDEX TECHNOLOGY WILL NEVER BE INFILTRATED BY HACKERS OR OTHER UNAUTHORIZED USERS.</strong></p>
 
           <h2>Section 10. Remedies</h2>
-
           <p><strong>YOUR SOLE REMEDY FOR ANY DISSATISFACTION WITH ANY FEDEX TECHNOLOGY IS TO STOP USING THE APPLICATION AND/OR SUCH FEDEX TECHNOLOGY.</strong> You agree to look to the Application Provider for any and all remedies for damages of any nature arising out of Your access, use or inability to access or use the Application and/or FedEx Technology. You waive any and all claims against FedEx and its affiliates arising from or relating to Your access to or use of (or inability to access or use) the Application or the other services provided by the Application Provider.</p>
 
           <h2>Section 11. Limitation Of Liability</h2>
-
           <p><strong>YOU EXPRESSLY ACKNOWLEDGE AND AGREE THAT FEDEX IS NOT CHARGING YOU A FEE FOR ACCESS TO OR USE OF FEDEX TECHNOLOGY. TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, FEDEX AND ITS PARENT COMPANY AND SUBSIDIARIES AND AFFILIATES, DIRECT AND INDIRECT, OF ITS PARENT COMPANY, LICENSORS, SUPPLIER, OR ANY OF THE FOREGOING'S RESPECTIVE EMPLOYEES, OFFICERS, DIRECTORS AND/OR AGENTS (COLLECTIVELY, "REPRESENTATIVES") ARE NOT AND SHALL NOT BE LIABLE FOR ANY SPECIAL, INCIDENTAL, EXEMPLARY, PUNITIVE, CONSEQUENTIAL OR OTHER INDIRECT DAMAGES (INCLUDING: DAMAGES FOR LOSS OF BUSINESS, LOSS OF DATA, LOSS OF PROFITS, DAMAGES TO YOUR COMPUTER SYSTEMS OR THE LIKE), WHETHER BASED ON BREACH OF CONTRACT, BREACH OF WARRANTY, TORT (INCLUDING, NEGLIGENCE), PRODUCT LIABILITY, STATUTORY OR STRICT LIABILITY OR OTHERWISE EVEN IF FEDEX OR ITS REPRESENTATIVES HAVE BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES AND EVEN IF A REMEDY SET FORTH HEREIN IS FOUND TO HAVE FAILED OF ITS ESSENTIAL PURPOSE.</strong></p>
-
-          <p><strong>IN ANY EVENT, THE AGGREGATE LIABILITY OF FEDEX UNDER THE AGREEMENT SHALL BE LIMITED TO THE AMOUNT ACTUALLY PAID BY YOU HEREUNDER.</strong></p>
+          <p><strong>IN ANY EVENT, THE AGGREGATE LIABILITY OF FEDEX UNDER THE AGREEMENT SHALL BE LIMITED TO THE AMOUNT ACTUALLY PAID BY YOU HEREUNDER. WHERE LEGAL LIABILITY CANNOT BE EXCLUDED, BUT MAY BE LIMITED, YOU AGREE THAT THE LIABILITY OF FEDEX SHALL BE LIMITED TO THE MAXIMUM AMOUNT OF FIFTY DOLLARS ($50.00).</strong></p>
 
           <h2>Section 12. INDEMNITY</h2>
-
           <p><strong>YOU SHALL, AT YOUR SOLE COST AND EXPENSE, DEFEND, INDEMNIFY AND HOLD HARMLESS FEDEX AND ITS REPRESENTATIVES FROM ANY AND ALL CLAIMS, DEMANDS, SUITS, DAMAGES, COSTS, EXPENSES, FINES AND JUDGMENTS, INCLUDING REASONABLE ATTORNEY'S FEES, (HEREINAFTER, COLLECTIVELY, "CLAIMS") ARISING OUT OF OR RELATING TO YOUR INSTALLATION, USE AND/OR REMOVAL OF THE APPLICATION, FEDEX TECHNOLOGY OR ANY OTHER MATERIALS PROVIDED TO YOU BY OR ON BEHALF OF FEDEX OR ITS REPRESENTATIVES. FEDEX MAY INTERVENE AND ASSUME ITS DEFENSE IN ANY SUCH CLAIMS, AT ITS EXPENSE AND IN ITS SOLE DISCRETION. YOU WILL NOT SETTLE ANY CLAIMS INVOLVING FEDEX, FEDEX SERVICE OR FEDEX TECHNOLOGY, WITHOUT THE PRIOR WRITTEN CONSENT OF FEDEX.</strong></p>
 
           <h2>Section 13. Notices</h2>
+          <p>(a) Any notice required or permitted to be given to FedEx relating to this EULA or the functioning of FedEx Technology or Limited Support Services will be given in writing as addressed below by U.S. Postal Service first class mail or via FedEx Express Overnight Letter delivery service to: Digital Channel Enablement, FedEx Corporate Services, Inc. 60 FedEx Parkway, Collierville, Tennessee 38017 USA.</p>
+          <p>(b) Any notice required or permitted to be given to You relating breach, termination or suspension of the Agreement will be given either by sending (i) via U.S. Postal Service or FedEx delivery service to the name and address listed in FedEx's records for Your FedEx account number; or, (ii) via electronic mail to the name and address listed in FedEx's records for Your FedEx account number.</p>
 
-<p><strong>(a)</strong> Any notice required or permitted to be given to FedEx relating to this EULA or the functioning of FedEx Technology or Limited Support Services will be given in writing as addressed below by U.S. Postal Service first class mail or via FedEx Express Overnight Letter delivery service to: Digital Channel Enablement, FedEx Corporate Services, Inc. 60 FedEx Parkway, Collierville, Tennessee 38017 USA.</p>
+          <h2>Section 14. Relationship of Parties</h2>
+          <p>You and FedEx are independent contractors acting for their own account, and neither party or its employees or agents are authorized to make any representations or commitments on the other party's behalf unless previously authorized by such party in writing. FedEx reserves the right to enter into relationships or agreements with other third parties regarding the subject matter of this EULA.</p>
 
-<p><strong>(b)</strong> Any notice required or permitted to be given to You relating breach, termination or suspension of the Agreement will be given either by sending (i) via U.S. Postal Service or FedEx delivery service to the name and address listed in FedEx's records for Your FedEx account number; or, (ii) via electronic mail to the name and address listed in FedEx's records for Your FedEx account number.</p>
+          <h2>Section 15. Waiver</h2>
+          <p>If FedEx fails to give notice or enforce any right under the Agreement, such failure will not constitute a waiver of the same, unless reduced to writing and signed by FedEx. The waiver of any provision will not constitute a waiver of the same or any other provision in the future.</p>
 
-<h2>Section 14. Relationship of Parties</h2>
+          <h2>Section 16. Severability</h2>
+          <p>If, for any reason, a court of competent jurisdiction finds any provision of the Agreement, or a portion thereof, to be unenforceable, that provision will be enforced to the maximum extent permissible so as to effectuate the intent of the parties and the remainder of the Agreement will remain in full force and effect.</p>
 
-<p>You and FedEx are independent contractors acting for their own account, and neither party or its employees or agents are authorized to make any representations or commitments on the other party's behalf unless previously authorized by such party in writing. FedEx reserves the right to enter into relationships or agreements with other third parties regarding the subject matter of this EULA.</p>
+          <h2>Section 17. Assignment</h2>
+          <p>FedEx retains the right to assign all or any part of the Agreement to any third party at any time without notice to You. You may not assign, transfer or sublicense the Agreement to any third party without the prior written permission of FedEx.</p>
 
-<h2>Section 15. Waiver</h2>
-
-<p>If FedEx fails to give notice or enforce any right under the Agreement, such failure will not constitute a waiver of the same, unless reduced to writing and signed by FedEx. The waiver of any provision will not constitute a waiver of the same or any other provision in the future.</p>
-
-<h2>Section 16. Severability</h2>
-
-<p>If, for any reason, a court of competent jurisdiction finds any provision of the Agreement, or a portion thereof, to be unenforceable, that provision will be enforced to the maximum extent permissible so as to effectuate the intent of the parties and the remainder of the Agreement will remain in full force and effect.</p>
-
-<h2>Section 17. Assignment</h2>
-
-<p>FedEx retains the right to assign all or any part of the Agreement to any third party at any time without notice to You. You may not assign, transfer or sublicense the Agreement to any third party without the prior written permission of FedEx.</p>
-          
           <h2>Section 18. Export</h2>
-
           <p>FedEx Technology (a) is subject to U.S. law, including export restrictions and controls imposed by various statutes and regulations, including the Export Administration Act, the Export Control Reform Act, and the Export Administration Regulations ("EAR"), and (b) may be subject to other applicable Trade Control Laws. By agreeing to this EULA, and accessing or using FedEx Technology, You represent, warrant and covenant that You are in compliance with and will comply with Trade Control Laws.</p>
 
           <h2>Section 19. Restricted Rights</h2>
+          <p>Pursuant to 48 C.F.R. 12.212 or 48 C.F.R. 227.7202, as applicable, FedEx Technology and manuals, technical specifications, technical data, documentation and other similar materials are Commercial Items as defined 48 C.F.R. 2.101 and are licensed to U.S Government end users only as Commercial Items and only with the rights granted to all other end users as provided in this EULA. Manufacturer is FedEx Corporate Services, Inc. 30 FedEx Parkway, Collierville, TN 38017.</p>
 
-<p>Pursuant to 48 C.F.R. 12.212 or 48 C.F.R. 227.7202, as applicable, FedEx Technology and manuals, technical specifications, technical data, documentation and other similar materials are Commercial Items as defined 48 C.F.R. 2.101 and are licensed to U.S Government end users only as Commercial Items and only with the rights granted to all other end users as provided in this EULA. Manufacturer is FedEx Corporate Services, Inc. 30 FedEx Parkway, Collierville, TN 38017.</p>
+          <h2>Section 20. Governing Language</h2>
+          <p>The parties hereby confirm that they have agreed that this agreement and all written documents between them be prepared in the English language only and such language will be the governing language.</p>
 
-<h2>Section 20. Governing Language</h2>
-
-<p>The parties hereby confirm that they have agreed that this agreement and all written documents between them be prepared in the English language only and such language will be the governing language.</p>
-          
           <h2>Section 21. Controlling Law</h2>
-
-          <p>This EULA will be governed by and construed in accordance with the laws of the United States of America and the State of Tennessee, excluding its conflict of laws provision. Any cause of action with respect to the Agreement, FedEx Technology or other services available through FedEx Technology must be instituted by You within one (1) year after the claim or cause of action has risen or be barred. Any cause of action brought relating to or arising from the Agreement, FedEx Technology or other services available through FedEx Technology must be brought in a court of competent jurisdiction within Shelby County, Tennessee (USA) and You agree to submit to the jurisdiction of such courts. FedEx will also have the right to bring claims against You in the courts of Your jurisdiction, where applicable. THE UNITED NATIONS CONVENTION ON CONTRACTS FOR THE INTERNATIONAL SALE OF GOODS DOES NOT APPLY TO THE AGREEMENT AND IS HEREBY DISCLAIMED BY BOTH PARTIES.</p>
+          <p>This EULA will be governed by and construed in accordance with the laws of the United States of America and the State of Tennessee, excluding its conflict of laws provision. Any cause of action with respect to the Agreement, FedEx Technology or other services available through FedEx Technology must be instituted by You within one (1) year after the claim or cause of action has risen or be barred. Any cause of action brought relating to or arising from the Agreement, FedEx Technology or other services available through FedEx Technology must be brought in a court of competent jurisdiction within Shelby County, Tennessee (USA) and You agree to submit to the jurisdiction of such courts. THE UNITED NATIONS CONVENTION ON CONTRACTS FOR THE INTERNATIONAL SALE OF GOODS DOES NOT APPLY TO THE AGREEMENT AND IS HEREBY DISCLAIMED BY BOTH PARTIES.</p>
 
           <h2>Section 22. Confidentiality</h2>
-
-          <p>This Agreement, FedEx Technology and all data, materials and other information concerning FedEx Technology or available through the Portal are or contain the confidential and proprietary information of FedEx or its licensors ("Confidential Information"). Confidential Information does not include any data, materials or other information made publicly available by FedEx or its affiliates without restriction on use or disclosure. You will not (a) distribute or disclose any Confidential Information to a third party without the written consent or instruction of FedEx except as expressly authorized in Section 2 of this EULA; and (b) use Confidential Information for any purposes other than those expressly set forth Sections 2 and 3 of this EULA. You will make no public announcements regarding the Agreement or the inclusion of any FedEx Technology into an Application without the prior written consent of FedEx. You will take all reasonable steps to secure and protect the Confidential Information from any unauthorized use, access or disclosure.</p>
+          <p>This Agreement, FedEx Technology and all data, materials and other information concerning FedEx Technology or available through the Portal are or contain the confidential and proprietary information of FedEx or its licensors ("Confidential Information"). You will not (a) distribute or disclose any Confidential Information to a third party without the written consent or instruction of FedEx except as expressly authorized in Section 2 of this EULA; and (b) use Confidential Information for any purposes other than those expressly set forth in Sections 2 and 3 of this EULA. You will take all reasonable steps to secure and protect the Confidential Information from any unauthorized use, access or disclosure.</p>
 
           <h2>Section 23. Complete Agreement</h2>
-
-          <p>The Agreement constitutes the entire agreement between You and FedEx with respect to FedEx Technology accessed or utilized by or integrated with the Application, and supersedes any prior or contemporaneous understandings, representations, statements or agreements, written or oral, regarding FedEx Technology. No amendment to or modification of the Agreement will be binding on FedEx without FedEx's written consent. In addition, except for FedEx Representatives, there are no third party beneficiaries to this Agreement. The provisions of Sections 1(b), 4, 5, 6, 7, 8, 9, 10 11, and 12 and Key Definitions of this EULA survive the termination of the Agreement.</p>
+          <p>The Agreement constitutes the entire agreement between You and FedEx with respect to FedEx Technology accessed or utilized by or integrated with the Application, and supersedes any prior or contemporaneous understandings, representations, statements or agreements, written or oral, regarding FedEx Technology. No amendment to or modification of the Agreement will be binding on FedEx without FedEx's written consent. The provisions of Sections 1(b), 4, 5, 6, 7, 8, 9, 10, 11, and 12 and Key Definitions of this EULA survive the termination of the Agreement.</p>
 
           <div class="version-footer">
             <strong>FedEx End User License Agreement v1.0</strong><br>
@@ -412,24 +180,14 @@
 
       <div class="acceptance-section">
         <div class="checkbox-container">
-          <input 
-            type="checkbox" 
-            id="acceptCheckbox" 
-            disabled
-            aria-label="Accept FedEx EULA"
-          >
+          <input type="checkbox" id="acceptCheckbox" disabled aria-label="Accept FedEx EULA">
           <label for="acceptCheckbox" id="acceptLabel" class="disabled">
             I have read and accept the FedEx End User License Agreement
           </label>
         </div>
-
         <div class="button-container">
-          <button class="btn-secondary" onclick="window.history.back()">
-            Cancel
-          </button>
-          <button class="btn-primary" id="continueBtn" disabled onclick="handleContinue()">
-            I accept
-          </button>
+          <button class="btn-secondary" onclick="window.history.back()">Cancel</button>
+          <button class="btn-primary" id="continueBtn" disabled onclick="handleContinue()">I accept</button>
         </div>
       </div>
 
@@ -446,16 +204,12 @@
     const continueBtn = document.getElementById('continueBtn');
     const scrollIndicator = document.getElementById('scrollIndicator');
     const scrollPrompt = document.getElementById('scrollPrompt');
-
     let hasScrolledToBottom = false;
 
-    // Detect scroll to bottom
     eulaBox.addEventListener('scroll', function() {
       const scrollTop = eulaBox.scrollTop;
       const scrollHeight = eulaBox.scrollHeight;
       const clientHeight = eulaBox.clientHeight;
-      
-      // Check if scrolled to bottom (with 20px tolerance)
       if (scrollTop + clientHeight >= scrollHeight - 20) {
         if (!hasScrolledToBottom) {
           hasScrolledToBottom = true;
@@ -471,19 +225,14 @@
       scrollPrompt.style.display = 'none';
     }
 
-    // Enable continue button when checkbox is checked
     acceptCheckbox.addEventListener('change', function() {
       continueBtn.disabled = !this.checked;
     });
 
     function handleContinue() {
       if (!acceptCheckbox.checked) return;
-      
-      // Store acceptance timestamp
       localStorage.setItem('ta_fedex_eula_accepted', new Date().toISOString());
       localStorage.setItem('ta_fedex_eula_version', 'v1.0_20220917');
-      
-      // Redirect to registration page
       window.location.href = '/settings.html';
     }
   </script>

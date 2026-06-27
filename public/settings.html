@@ -53,9 +53,9 @@
   <div class="container">
     <div class="header">
       <div style="margin-bottom: 16px;">
-    <img src="/FedEx_Purple_Orange.jpg" alt="FedEx®" style="height: 36px; display: block;">
-  </div>
-  <h1>FedEx End User License Agreement</h1>
+        <img src="/FedEx_White_Orange.jpg" alt="FedEx®" style="height: 36px; display: block;">
+      </div>
+      <h1>FedEx Account Registration</h1>
       <p>Connect your FedEx account to enable live shipping rates</p>
     </div>
 
@@ -81,7 +81,6 @@
       <div class="form-section active" id="step1">
         <h2>FedEx Account Information</h2>
         <p style="margin-bottom: 24px; color: #666;">Enter your 9-digit FedEx account number and billing address exactly as it appears in your FedEx account.</p>
-
         <div class="form-group">
           <label for="accountNumber">FedEx Account Number *</label>
           <input type="text" id="accountNumber" placeholder="123456789" maxlength="9" required>
@@ -125,7 +124,6 @@
       <div class="form-section" id="step2">
         <h2>Identity Verification</h2>
         <p style="margin-bottom: 24px; color: #666;">Choose how you'd like to verify your FedEx account:</p>
-
         <div class="form-group">
           <label>Verification Method</label>
           <div class="radio-group">
@@ -228,6 +226,81 @@
             <button class="btn-primary" onclick="window.location.href='/'">Continue to Dashboard</button>
           </div>
         </div>
+
+        <!-- Supported Services Section -->
+        <div style="margin-top: 40px; padding-top: 32px; border-top: 1px solid #eee; text-align: left;">
+          <h3 style="font-size: 16px; font-weight: 600; margin-bottom: 16px; color: #333;">Supported FedEx® Services</h3>
+          <p style="font-size: 13px; color: #666; margin-bottom: 16px;">The following FedEx® services will be available at checkout based on your account:</p>
+          <table style="width: 100%; border-collapse: collapse; font-size: 13px;">
+            <thead>
+              <tr style="background: #f5f5f5;">
+                <th style="padding: 10px 12px; text-align: left; border: 1px solid #ddd; font-weight: 600;">Service Name</th>
+                <th style="padding: 10px 12px; text-align: left; border: 1px solid #ddd; font-weight: 600;">Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">FedEx First Overnight®</td>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">Express Domestic</td>
+              </tr>
+              <tr style="background: #fafafa;">
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">FedEx Priority Overnight®</td>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">Express Domestic</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">FedEx Standard Overnight®</td>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">Express Domestic</td>
+              </tr>
+              <tr style="background: #fafafa;">
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">FedEx 2Day® A.M.</td>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">Express Domestic</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">FedEx 2Day®</td>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">Express Domestic</td>
+              </tr>
+              <tr style="background: #fafafa;">
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">FedEx Ground®</td>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">Ground Domestic</td>
+              </tr>
+              <tr>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">FedEx Home Delivery®</td>
+                <td style="padding: 10px 12px; border: 1px solid #ddd;">Ground Residential</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px 0; color: #333;">Supported Packaging Types</h3>
+          <ul style="font-size: 13px; color: #333; padding-left: 20px; line-height: 2;">
+            <li>FedEx® Envelope</li>
+            <li>FedEx® Pak</li>
+            <li>FedEx® Box</li>
+            <li>FedEx® Tube</li>
+            <li>FedEx® Small Box</li>
+            <li>FedEx® Medium Box</li>
+            <li>FedEx® Large Box</li>
+            <li>FedEx® Extra Large Box</li>
+            <li>Your Packaging (customer packaging)</li>
+          </ul>
+
+          <h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px 0; color: #333;">Special Handling (Shipment Level)</h3>
+          <ul style="font-size: 13px; color: #333; padding-left: 20px; line-height: 2;">
+            <li>Saturday Delivery</li>
+            <li>Hold at FedEx Location</li>
+            <li>Declared Value (Extended Liability)</li>
+          </ul>
+
+          <h3 style="font-size: 16px; font-weight: 600; margin: 24px 0 16px 0; color: #333;">Special Handling (Package Level)</h3>
+          <ul style="font-size: 13px; color: #333; padding-left: 20px; line-height: 2;">
+            <li>Signature Required</li>
+            <li>Adult Signature Required</li>
+            <li>Residential Delivery Indicator</li>
+          </ul>
+
+          <p style="font-size: 11px; color: #999; margin-top: 24px;">
+            FedEx service marks are owned by Federal Express Corporation and are used by permission.
+          </p>
+        </div>
       </div>
 
       <div class="fedex-disclaimer">
@@ -274,7 +347,6 @@
       document.getElementById('alertArea').innerHTML = '';
     }
 
-    // Step 1: Address Validation
     async function validateAddress() {
       clearAlert();
       var btn = document.getElementById('step1Btn');
@@ -304,8 +376,6 @@
 
         if (data.mfaOptions && data.mfaOptions[0] && data.mfaOptions[0].accountAuthToken) {
           accountAuthToken = data.mfaOptions[0].accountAuthToken;
-
-          // MFA Passthrough: skip Factor 2, go directly to success
           if (data.mfaOptions[0].mfaRequired === false) {
             goToStep(3);
           } else {
@@ -338,7 +408,6 @@
       clearAlert();
     }
 
-    // Invoice submission
     async function submitInvoice() {
       clearAlert();
       var btn = document.getElementById('invoiceBtn');
@@ -386,7 +455,6 @@
       }
     }
 
-    // PIN request
     async function requestPIN() {
       var deliveryMethod = document.querySelector('input[name="pinDelivery"]:checked');
       if (!deliveryMethod) {
@@ -432,7 +500,6 @@
       }
     }
 
-    // PIN submission
     async function submitPIN() {
       clearAlert();
       var btn = document.getElementById('pinSubmitBtn');

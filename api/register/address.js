@@ -19,20 +19,26 @@ module.exports = async (req, res) => {
 
     const token = await getTAlohaToken();
 
+    // Build request body as variable so we can log it
+    const requestBody = {
+      accountNumber: { value: accountNumber },
+      customerName,
+      address: {
+        streetLines:         [address.street],
+        city:                address.city,
+        stateOrProvinceCode: address.stateOrProvinceCode,
+        postalCode:          address.postalCode,
+        countryCode:         address.countryCode || "US",
+        residential:         false,
+      },
+    };
+
+    // Log request for validation submission
+    console.log("FEDEX_ADDRESS_REQUEST:", JSON.stringify(requestBody, null, 2));
+
     const response = await axios.post(
       `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/address/keysgeneration`,
-      {
-        accountNumber: { value: accountNumber },
-        customerName,
-        address: {
-          streetLines:         [address.street],
-          city:                address.city,
-          stateOrProvinceCode: address.stateOrProvinceCode,
-          postalCode:          address.postalCode,
-          countryCode:         address.countryCode || "US",
-          residential:         false,
-        },
-      },
+      requestBody,
       {
         headers: {
           Authorization:  `Bearer ${token}`,
@@ -41,6 +47,9 @@ module.exports = async (req, res) => {
         },
       }
     );
+
+    // Log response for validation submission
+    console.log("FEDEX_ADDRESS_RESPONSE:", JSON.stringify(response.data, null, 2));
 
     const output           = response.data.output;
     const accountAuthToken = output?.accountAuthToken;

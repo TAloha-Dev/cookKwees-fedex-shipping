@@ -23,9 +23,15 @@ module.exports = async (req, res) => {
 
     const token = await getTAlohaToken();
 
+    // Build request body as variable so we can log it
+    const requestBody = { locale: "en_US", option };
+
+    // Log request for validation submission
+    console.log("FEDEX_PIN_GENERATE_REQUEST:", JSON.stringify(requestBody, null, 2));
+
     const response = await axios.post(
       `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/customerkeys/pingeneration`,
-      { locale: "en_US", option },
+      requestBody,
       {
         headers: {
           Authorization:    `Bearer ${token}`,
@@ -35,6 +41,9 @@ module.exports = async (req, res) => {
         },
       }
     );
+
+    // Log response for validation submission
+    console.log("FEDEX_PIN_GENERATE_RESPONSE:", JSON.stringify(response.data, null, 2));
 
     const status = response.data?.output?.status;
     console.log(`PIN Generation (${option}): ${status}`);

@@ -20,9 +20,15 @@ module.exports = async (req, res) => {
 
     const token = await getTAlohaToken();
 
+    // Build request body as variable so we can log it
+    const requestBody = { secureCodePin };
+
+    // Log request for validation submission
+    console.log("FEDEX_PIN_VALIDATE_REQUEST:", JSON.stringify(requestBody, null, 2));
+
     const response = await axios.post(
-       `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/pin/keysgeneration`,
-      { secureCodePin },
+      `${process.env.TALOHA_FEDEX_BASE_URL}/registration/v2/pin/keysgeneration`,
+      requestBody,
       {
         headers: {
           Authorization:    `Bearer ${token}`,
@@ -33,10 +39,12 @@ module.exports = async (req, res) => {
       }
     );
 
+    // Log response for validation submission
+    console.log("FEDEX_PIN_VALIDATE_RESPONSE:", JSON.stringify(response.data, null, 2));
+
     const { child_Key, child_secret } = response.data.output || {};
     if (!child_Key || !child_secret) throw new Error("No credentials received from FedEx.");
 
-    // Save merchant credentials to database
     await saveMerchant(storeId, {
       accountNumber,
       customerName,

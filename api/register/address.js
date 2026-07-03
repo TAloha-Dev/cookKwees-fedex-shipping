@@ -3,7 +3,8 @@
 // Correct endpoint: POST /registration/v2/address/keysgeneration
 
 const axios              = require("axios");
-const { getTAlohaToken } = require("../../lib/fedex-auth");
+const { getTAlohaToken, getMerchantToken } = require("../../lib/fedex-auth");
+const { saveMerchant }   = require("../../lib/db");
 
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
@@ -51,9 +52,26 @@ module.exports = async (req, res) => {
     // Log response for validation submission
     console.log("FEDEX_ADDRESS_RESPONSE:", JSON.stringify(response.data, null, 2));
 
-    const output           = response.data.output;
-    const accountAuthToken = output?.accountAuthToken;
-    const mfaOptions       = output?.mfaOptions || [];
+    const output           = response.data.output || {};
+    const accountAuthToken = output.accountAuthToken;
+    const mfaOptions       = output.mfaOptions || [];
+    const { child_Key, child_secret } = output;
+
+    // Sweden MFA passthrough — child credentials returned directly (skip Factor 2)
+    if (child_Key && child_secret) {
+      await saveMerchant(storeId, {
+        accountNumber,
+        customerName,
+        childKey:    child_Key,
+        childSecret: child_secret,
+      });
+
+      // Log Child Authorization (CSP token) for validation submission
+      await getMerchantToken(child_Key, child_secret);
+
+      console.log(`Merchant ${storeId} connected via MFA bypass — account ${accountNumber}`);
+      return res.status(200).json({ success: true, mfaBypass: true });
+    }
 
     if (!accountAuthToken && mfaOptions.length === 0) {
       throw new Error("No response received from FedEx.");

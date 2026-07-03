@@ -107,6 +107,8 @@ module.exports = async (req, res) => {
       },
     };
 
+    console.log("FEDEX_RATE_REQUEST:", JSON.stringify(rateRequest, null, 2));
+
     // Call FedEx Comprehensive Rates API (per FedEx Validation Team guidance)
     const rateResponse = await axios.post(
       `${process.env.TALOHA_FEDEX_BASE_URL}/rate/v1/comprehensiverates/quotes`,
@@ -119,6 +121,8 @@ module.exports = async (req, res) => {
         },
       }
     );
+
+    console.log("FEDEX_RATE_RESPONSE:", JSON.stringify(rateResponse.data, null, 2));
 
     // Parse and filter rate results
     const shippingOptions = [];

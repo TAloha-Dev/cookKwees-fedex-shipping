@@ -113,6 +113,7 @@
             <option value="US">United States</option>
             <option value="CA">Canada</option>
             <option value="MX">Mexico</option>
+            <option value="SE">Sweden</option>
           </select>
         </div>
         <div class="button-group">
@@ -374,13 +375,11 @@
         });
         var data = await response.json();
 
-        if (data.mfaOptions && data.mfaOptions[0] && data.mfaOptions[0].accountAuthToken) {
-          accountAuthToken = data.mfaOptions[0].accountAuthToken;
-          if (data.mfaOptions[0].mfaRequired === false) {
-            goToStep(3);
-          } else {
-            goToStep(2);
-          }
+        if (data.mfaBypass || data.success) {
+          goToStep(3);
+        } else if (data.accountAuthToken) {
+          accountAuthToken = data.accountAuthToken;
+          goToStep(2);
         } else {
           var errMsg = data.error || 'Address validation failed. Please check your details and try again.';
           if (isMaxRetryError(errMsg)) {

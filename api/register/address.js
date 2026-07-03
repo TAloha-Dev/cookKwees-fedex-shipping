@@ -76,8 +76,8 @@ module.exports = async (req, res) => {
     console.log("FEDEX_ADDRESS_RESPONSE:", JSON.stringify(response.data, null, 2));
 
     const output           = response.data.output || {};
-    const accountAuthToken = output.accountAuthToken;
     const mfaOptions       = output.mfaOptions || [];
+    const accountAuthToken = output.accountAuthToken || mfaOptions[0]?.accountAuthToken;
     const { child_Key, child_secret } = output;
 
     // Sweden MFA passthrough — child credentials returned directly (skip Factor 2)

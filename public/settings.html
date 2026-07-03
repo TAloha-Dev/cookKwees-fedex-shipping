@@ -379,8 +379,8 @@
 
         if (data.mfaBypass || data.success) {
           goToStep(3);
-        } else if (data.accountAuthToken) {
-          accountAuthToken = data.accountAuthToken;
+        } else if (data.accountAuthToken || (data.mfaOptions && data.mfaOptions.length > 0)) {
+          accountAuthToken = data.accountAuthToken || data.mfaOptions[0].accountAuthToken;
           goToStep(2);
         } else {
           var errMsg = data.error || 'Address validation failed. Please check your details and try again.';

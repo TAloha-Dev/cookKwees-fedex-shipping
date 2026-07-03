@@ -3,7 +3,7 @@
 // Validates the 6-digit PIN → saves child_key + child_secret to DB
 
 const axios              = require("axios");
-const { getTAlohaToken } = require("../../lib/fedex-auth");
+const { getTAlohaToken, getMerchantToken } = require("../../lib/fedex-auth");
 const { saveMerchant }   = require("../../lib/db");
 
 module.exports = async (req, res) => {
@@ -51,6 +51,9 @@ module.exports = async (req, res) => {
       childKey:    child_Key,
       childSecret: child_secret,
     });
+
+    // Log Child Authorization (CSP token) for validation submission
+    await getMerchantToken(child_Key, child_secret);
 
     console.log(`Merchant ${storeId} connected via PIN — account ${accountNumber}`);
     return res.status(200).json({ success: true });

@@ -6,6 +6,35 @@ const axios              = require("axios");
 const { getTAlohaToken, getMerchantToken } = require("../../lib/fedex-auth");
 const { saveMerchant }   = require("../../lib/db");
 
+function buildStreetLines(street) {
+  if (Array.isArray(street)) {
+    return street.map((line) => String(line).trim()).filter(Boolean);
+  }
+  if (!street) return [];
+  return String(street).split(",").map((line) => line.trim()).filter(Boolean);
+}
+
+function buildFedExAddress(address) {
+  const countryCode = (address.countryCode || "US").toUpperCase();
+  const fedexAddress = {
+    streetLines: buildStreetLines(address.street),
+    city:        address.city,
+    postalCode:  address.postalCode,
+    countryCode,
+    residential: false,
+  };
+
+  const state = (address.stateOrProvinceCode || "").trim();
+  if (state) fedexAddress.stateOrProvinceCode = state.toUpperCase();
+
+  return fedexAddress;
+}
+
+function localeForCountry(countryCode) {
+  const locales = { SE: "en_SE", GB: "en_GB", DE: "en_DE", FR: "en_FR" };
+  return locales[(countryCode || "").toUpperCase()] || "en_US";
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -21,17 +50,11 @@ module.exports = async (req, res) => {
     const token = await getTAlohaToken();
 
     // Build request body as variable so we can log it
+    const countryCode = (address.countryCode || "US").toUpperCase();
     const requestBody = {
       accountNumber: { value: accountNumber },
       customerName,
-      address: {
-        streetLines:         [address.street],
-        city:                address.city,
-        stateOrProvinceCode: address.stateOrProvinceCode,
-        postalCode:          address.postalCode,
-        countryCode:         address.countryCode || "US",
-        residential:         false,
-      },
+      address: buildFedExAddress(address),
     };
 
     // Log request for validation submission
@@ -44,7 +67,7 @@ module.exports = async (req, res) => {
         headers: {
           Authorization:  `Bearer ${token}`,
           "Content-Type": "application/json",
-          "x-locale":     "en_US",
+          "x-locale":     localeForCountry(countryCode),
         },
       }
     );
@@ -59,15 +82,22 @@ module.exports = async (req, res) => {
 
     // Sweden MFA passthrough — child credentials returned directly (skip Factor 2)
     if (child_Key && child_secret) {
-      await saveMerchant(storeId, {
-        accountNumber,
-        customerName,
-        childKey:    child_Key,
-        childSecret: child_secret,
-      });
+      try {
+        await saveMerchant(storeId, {
+          accountNumber,
+          customerName,
+          childKey:    child_Key,
+          childSecret: child_secret,
+        });
 
-      // Log Child Authorization (CSP token) for validation submission
-      await getMerchantToken(child_Key, child_secret);
+        // Log Child Authorization (CSP token) for validation submission
+        await getMerchantToken(child_Key, child_secret);
+      } catch (setupError) {
+        console.error(
+          "MFA bypass post-setup error (address validation succeeded):",
+          JSON.stringify(setupError.response?.data || setupError.message, null, 2)
+        );
+      }
 
       console.log(`Merchant ${storeId} connected via MFA bypass — account ${accountNumber}`);
       return res.status(200).json({ success: true, mfaBypass: true });
@@ -88,12 +118,18 @@ module.exports = async (req, res) => {
       JSON.stringify(error.response?.data || error.message, null, 2)
     );
 
-    const code    = error.response?.data?.errors?.[0]?.code;
+    const fedexError = error.response?.data?.errors?.[0];
+    const code       = fedexError?.code;
+    const fedexMsg   = fedexError?.message;
     const message =
-      code === "ACCOUNT.ADDRESS.MISMATCH"  ? "Address does not match FedEx records. Please check your billing address." :
-      code === "ACCOUNT.NUMBER.NOTFOUND"   ? "FedEx account number not found. Please check your account number." :
-      error.response?.data?.errors?.[0]?.message || "Address validation failed. Please try again.";
+      code === "ACCOUNT.ADDRESS.MISMATCH" ? "Address does not match FedEx records. Please check your billing address." :
+      code === "ACCOUNT.NUMBER.NOTFOUND"  ? "FedEx account number not found. Please check your account number." :
+      fedexMsg || "Address validation failed. Please try again.";
 
-    return res.status(400).json({ error: message });
+    return res.status(400).json({
+      error:     message,
+      fedexCode: code || null,
+      fedexDetail: error.response?.data || null,
+    });
   }
 };

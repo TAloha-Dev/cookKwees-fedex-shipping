@@ -550,7 +550,8 @@
 
     window.addEventListener('DOMContentLoaded', function() {
       var eulaAccepted = localStorage.getItem('ta_fedex_eula_accepted');
-      if (!eulaAccepted) {
+      var eulaVersion = localStorage.getItem('ta_fedex_eula_version');
+      if (!eulaAccepted || eulaVersion !== 'v4_202406') {
         window.location.href = '/eula.html';
       }
     });

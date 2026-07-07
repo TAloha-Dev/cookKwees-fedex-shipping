@@ -1,15 +1,9 @@
 const { chromium } = require('playwright');
 const path = require('path');
 const fs = require('fs');
+const { BASE, PKG_ROOT, waitForFedExLogo } = require('./screenshot-utils');
 
-const BASE = 'https://cook-kwees-fedex-shipping.vercel.app';
-const OUT = path.join(
-  process.env.USERPROFILE || '',
-  'Downloads',
-  'TAloha_FedEx_Validation_Case00003190',
-  'Screenshots',
-  'SWEDEN_MFA_BYPASS'
-);
+const OUT = path.join(PKG_ROOT, 'SWEDEN_MFA_BYPASS');
 
 async function main() {
   fs.mkdirSync(OUT, { recursive: true });
@@ -18,12 +12,14 @@ async function main() {
   const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
 
   await page.goto(`${BASE}/eula.html`, { waitUntil: 'networkidle' });
+  await waitForFedExLogo(page);
   await page.evaluate(() => {
     localStorage.setItem('ta_fedex_eula_accepted', 'true');
     localStorage.setItem('ta_fedex_eula_version', 'v4_202406');
   });
 
   await page.goto(`${BASE}/settings.html`, { waitUntil: 'networkidle' });
+  await waitForFedExLogo(page);
 
   await page.fill('#accountNumber', '604849268');
   await page.fill('#customerName', 'TAloha Sweden Bypass');
@@ -37,6 +33,7 @@ async function main() {
     if (typeof updateCountryFields === 'function') updateCountryFields();
   });
   await page.waitForTimeout(300);
+  await waitForFedExLogo(page);
 
   await page.screenshot({
     path: path.join(OUT, '01_step1_sweden_filled.png'),
@@ -46,18 +43,21 @@ async function main() {
   await page.click('#step1Btn');
   await page.waitForSelector('#step3.active', { timeout: 30000 });
   await page.waitForTimeout(500);
+  await waitForFedExLogo(page);
 
   await page.screenshot({
     path: path.join(OUT, '02_step3_mfa_bypass_success.png'),
     fullPage: true,
   });
 
-  // Fallback customer service message screenshot
   await page.evaluate(() => {
-    showAlert('We are unable to process this request. Please try again later or call FedEx Customer Service and ask for technical support.');
+    const msg = 'We are unable to process this request. Please try again later or call FedEx Customer Service and ask for technical support.';
+    document.getElementById('alertArea').innerHTML = '<div class="alert alert-error">' + msg + '</div>';
   });
   await page.waitForTimeout(300);
-  const fallbackDir = path.join(path.dirname(OUT), '..', 'Fallback');
+  await waitForFedExLogo(page);
+
+  const fallbackDir = path.join(PKG_ROOT, 'Fallback');
   fs.mkdirSync(fallbackDir, { recursive: true });
   await page.screenshot({
     path: path.join(fallbackDir, '01_customer_service_fallback.png'),

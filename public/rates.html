@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Rates | TAloha FedEx</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f5f5f5; padding: 20px; }
+    .container { max-width: 700px; margin: 0 auto; background: white; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); overflow: hidden; }
+    .header { background: #4A148C; color: white; padding: 24px 32px; }
+    .header h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
+    .header p { font-size: 14px; opacity: 0.9; }
+    .fedex-logo-wrap { margin-bottom: 16px; padding: 10px; background: white; display: inline-block; border-radius: 4px; line-height: 0; }
+    .fedex-logo-wrap img { height: 40px; width: auto; display: block; }
+    .content { padding: 32px; }
+    .checkout-title { font-size: 20px; font-weight: 600; margin-bottom: 8px; color: #333; }
+    .checkout-sub { font-size: 14px; color: #666; margin-bottom: 24px; }
+    .shipment-summary { background: #fafafa; border: 1px solid #eee; border-radius: 4px; padding: 16px; margin-bottom: 24px; font-size: 13px; color: #555; line-height: 1.6; }
+    .rate-list { border: 1px solid #ddd; border-radius: 4px; overflow: hidden; }
+    .rate-option { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border-bottom: 1px solid #eee; cursor: pointer; }
+    .rate-option:last-child { border-bottom: none; }
+    .rate-option.selected { background: #F3E5F5; border-left: 4px solid #4A148C; }
+    .rate-option input { margin-right: 12px; width: 18px; height: 18px; }
+    .rate-left { display: flex; align-items: center; }
+    .rate-name { font-size: 15px; font-weight: 500; color: #333; }
+    .rate-price { font-size: 16px; font-weight: 700; color: #333; }
+    .loading { color: #666; font-size: 14px; padding: 24px; text-align: center; }
+    .error { background: #FFEBEE; color: #C62828; padding: 12px 16px; border-radius: 4px; font-size: 14px; margin-bottom: 16px; }
+    .fedex-disclaimer { margin-top: 32px; padding-top: 24px; border-top: 1px solid #eee; font-size: 12px; color: #666; text-align: center; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="fedex-logo-wrap">
+        <img src="/Logo.png" alt="FedEx®">
+      </div>
+      <h1>Checkout — Shipping Method</h1>
+      <p>Live FedEx rates at checkout (Ecwid integration)</p>
+    </div>
+    <div class="content">
+      <h2 class="checkout-title">Select a shipping method</h2>
+      <p class="checkout-sub">Rates are returned from the FedEx Comprehensive Rates API for your connected account.</p>
+
+      <div class="shipment-summary">
+        <strong>Ship from:</strong> 15 W 18TH ST FL 7, NEW YORK, NY 10011, US<br>
+        <strong>Ship to:</strong> 123 Main St, Atlanta, GA 30301, US (residential)<br>
+        <strong>Package weight:</strong> 5 lb
+      </div>
+
+      <div id="errorArea"></div>
+      <div id="rateArea" class="loading">Loading FedEx rates…</div>
+
+      <div class="fedex-disclaimer">
+        FedEx service marks are owned by Federal Express Corporation and are used by permission.
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function formatUsd(amount) {
+      return '$' + amount.toFixed(2);
+    }
+
+    function renderRates(options) {
+      var area = document.getElementById('rateArea');
+      if (!options.length) {
+        area.className = 'error';
+        area.textContent = 'No shipping options returned.';
+        return;
+      }
+
+      var html = '<div class="rate-list">';
+      options.forEach(function(opt, i) {
+        var selected = opt.serviceType === 'GROUND_HOME_DELIVERY' || (i === 0 && !options.some(function(o) { return o.serviceType === 'GROUND_HOME_DELIVERY'; }));
+        html += '<label class="rate-option' + (selected ? ' selected' : '') + '">' +
+          '<div class="rate-left">' +
+            '<input type="radio" name="shipping" ' + (selected ? 'checked' : '') + '>' +
+            '<span class="rate-name">' + opt.title + '</span>' +
+          '</div>' +
+          '<span class="rate-price">' + formatUsd(opt.rate) + '</span>' +
+        '</label>';
+      });
+      html += '</div>';
+      area.className = '';
+      area.innerHTML = html;
+    }
+
+    async function loadRates() {
+      var params = new URLSearchParams(window.location.search);
+      var storeId = params.get('storeId');
+      if (!storeId) {
+        document.getElementById('errorArea').innerHTML = '<div class="error">Missing storeId in URL.</div>';
+        document.getElementById('rateArea').textContent = '';
+        return;
+      }
+
+      try {
+        var res = await fetch('/api/rates-demo?storeId=' + encodeURIComponent(storeId));
+        var data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Failed to load rates');
+        renderRates(data.shippingOptions || []);
+      } catch (err) {
+        document.getElementById('errorArea').innerHTML = '<div class="error">' + err.message + '</div>';
+        document.getElementById('rateArea').textContent = '';
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', loadRates);
+  </script>
+</body>
+</html>

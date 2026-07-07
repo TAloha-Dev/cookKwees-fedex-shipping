@@ -38,9 +38,10 @@ function localeForCountry(countryCode) {
 
 function extractChildCredentials(output) {
   if (!output || typeof output !== "object") return {};
+  const creds = output.credentials || output;
   return {
-    childKey:    output.child_Key    || output.child_key    || output.childKey,
-    childSecret: output.child_secret || output.childSecret,
+    childKey:    creds.child_Key    || creds.child_key    || creds.childKey,
+    childSecret: creds.child_secret || creds.childSecret,
   };
 }
 

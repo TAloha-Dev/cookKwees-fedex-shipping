@@ -24,9 +24,14 @@ async function main() {
   await page.waitForFunction(() => {
     const area = document.getElementById('rateArea');
     return area && !area.textContent.includes('Loading FedEx rates');
-  }, { timeout: 30000 });
+  }, { timeout: 60000 });
 
-  await page.waitForSelector('.rate-option', { timeout: 30000 });
+  const hasRates = await page.$('.rate-option');
+  if (!hasRates) {
+    const errText = await page.textContent('#errorArea');
+    const rateText = await page.textContent('#rateArea');
+    throw new Error(`Rates did not render. error=${errText || 'none'} rateArea=${rateText || 'empty'}`);
+  }
   await page.waitForFunction(() => {
     return document.body.textContent.includes('26.78') ||
            document.body.textContent.includes('$26.78');

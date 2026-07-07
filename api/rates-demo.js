@@ -24,13 +24,13 @@ const DEMO_CART = {
 };
 
 const SERVICE_NAMES = {
-  FEDEX_GROUND: "FedEx Ground®",
-  GROUND_HOME_DELIVERY: "FedEx Home Delivery®",
-  FEDEX_2_DAY: "FedEx 2Day®",
-  FEDEX_2_DAY_AM: "FedEx 2Day® A.M.",
-  STANDARD_OVERNIGHT: "FedEx Standard Overnight®",
-  PRIORITY_OVERNIGHT: "FedEx Priority Overnight®",
-  FIRST_OVERNIGHT: "FedEx First Overnight®",
+  FEDEX_GROUND: "FedEx Ground\u00AE",
+  GROUND_HOME_DELIVERY: "FedEx Home Delivery\u00AE",
+  FEDEX_2_DAY: "FedEx 2Day\u00AE",
+  FEDEX_2_DAY_AM: "FedEx 2Day\u00AE A.M.",
+  STANDARD_OVERNIGHT: "FedEx Standard Overnight\u00AE",
+  PRIORITY_OVERNIGHT: "FedEx Priority Overnight\u00AE",
+  FIRST_OVERNIGHT: "FedEx First Overnight\u00AE",
 };
 
 module.exports = async (req, res) => {

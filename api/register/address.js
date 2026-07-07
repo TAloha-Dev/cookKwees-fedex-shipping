@@ -36,6 +36,14 @@ function localeForCountry(countryCode) {
   return locales[(countryCode || "").toUpperCase()] || "en_US";
 }
 
+function extractChildCredentials(output) {
+  if (!output || typeof output !== "object") return {};
+  return {
+    childKey:    output.child_Key    || output.child_key    || output.childKey,
+    childSecret: output.child_secret || output.childSecret,
+  };
+}
+
 module.exports = async (req, res) => {
   if (req.method !== "POST") {
     return res.status(405).json({ error: "Method not allowed" });
@@ -79,20 +87,20 @@ module.exports = async (req, res) => {
     const output           = response.data.output || {};
     const mfaOptions       = output.mfaOptions || [];
     const accountAuthToken = output.accountAuthToken || mfaOptions[0]?.accountAuthToken;
-    const { child_Key, child_secret } = output;
+    const { childKey, childSecret } = extractChildCredentials(output);
 
     // Sweden MFA passthrough — child credentials returned directly (skip Factor 2)
-    if (child_Key && child_secret) {
+    if (childKey && childSecret) {
       try {
         await saveMerchant(storeId, {
           accountNumber,
           customerName,
-          childKey:    child_Key,
-          childSecret: child_secret,
+          childKey,
+          childSecret,
         });
 
         // Log Child Authorization (CSP token) for validation submission
-        await getMerchantToken(child_Key, child_secret);
+        await getMerchantToken(childKey, childSecret);
       } catch (setupError) {
         console.error(
           "MFA bypass post-setup error (address validation succeeded):",
@@ -105,7 +113,14 @@ module.exports = async (req, res) => {
     }
 
     if (!accountAuthToken && mfaOptions.length === 0) {
-      throw new Error("No response received from FedEx.");
+      console.error(
+        "Unexpected FedEx address response:",
+        JSON.stringify(response.data, null, 2)
+      );
+      return res.status(400).json({
+        error: "Unexpected FedEx address validation response. See fedexDetail.",
+        fedexDetail: response.data,
+      });
     }
 
     return res.status(200).json({
@@ -125,12 +140,12 @@ module.exports = async (req, res) => {
     const message =
       code === "ACCOUNT.ADDRESS.MISMATCH" ? "Address does not match FedEx records. Please check your billing address." :
       code === "ACCOUNT.NUMBER.NOTFOUND"  ? "FedEx account number not found. Please check your account number." :
-      fedexMsg || "Address validation failed. Please try again.";
+      fedexMsg || error.message || "Address validation failed. Please try again.";
 
     return res.status(400).json({
       error:     message,
       fedexCode: code || null,
-      fedexDetail: error.response?.data || null,
+      fedexDetail: error.response?.data || (error.message !== "No response received from FedEx." ? { message: error.message } : null),
     });
   }
 };

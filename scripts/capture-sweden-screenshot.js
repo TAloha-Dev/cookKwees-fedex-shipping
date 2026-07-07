@@ -1,0 +1,71 @@
+const { chromium } = require('playwright');
+const path = require('path');
+const fs = require('fs');
+
+const BASE = 'https://cook-kwees-fedex-shipping.vercel.app';
+const OUT = path.join(
+  process.env.USERPROFILE || '',
+  'Downloads',
+  'TAloha_FedEx_Validation_Case00003190',
+  'Screenshots',
+  'SWEDEN_MFA_BYPASS'
+);
+
+async function main() {
+  fs.mkdirSync(OUT, { recursive: true });
+
+  const browser = await chromium.launch({ headless: true });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+
+  await page.goto(`${BASE}/eula.html`, { waitUntil: 'networkidle' });
+  await page.evaluate(() => {
+    localStorage.setItem('ta_fedex_eula_accepted', 'true');
+    localStorage.setItem('ta_fedex_eula_version', 'v4_202406');
+  });
+
+  await page.goto(`${BASE}/settings.html`, { waitUntil: 'networkidle' });
+
+  await page.fill('#accountNumber', '604849268');
+  await page.fill('#customerName', 'TAloha Sweden Bypass');
+  await page.fill('#street', 'HAGAGATAN 1, VI');
+  await page.fill('#city', 'STOCKHOLM');
+  await page.fill('#postalCode', '11349');
+  await page.selectOption('#country', 'SE');
+  await page.evaluate(() => {
+    document.getElementById('state').value = '';
+    if (typeof updateCountryFields === 'function') updateCountryFields();
+  });
+  await page.waitForTimeout(300);
+
+  await page.screenshot({
+    path: path.join(OUT, '01_step1_sweden_filled.png'),
+    fullPage: false,
+  });
+
+  await page.click('#step1Btn');
+  await page.waitForSelector('#step3.active', { timeout: 30000 });
+  await page.waitForTimeout(500);
+
+  await page.screenshot({
+    path: path.join(OUT, '02_step3_mfa_bypass_success.png'),
+    fullPage: true,
+  });
+
+  // Fallback customer service message screenshot
+  await page.evaluate(() => showAlert(FEDEX_SUPPORT_MSG));
+  await page.waitForTimeout(300);
+  const fallbackDir = path.join(path.dirname(OUT), '..', 'Fallback');
+  fs.mkdirSync(fallbackDir, { recursive: true });
+  await page.screenshot({
+    path: path.join(fallbackDir, '01_customer_service_fallback.png'),
+    fullPage: false,
+  });
+
+  await browser.close();
+  console.log('Saved Sweden MFA bypass screenshots to:', OUT);
+}
+
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

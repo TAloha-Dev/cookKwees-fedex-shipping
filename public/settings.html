@@ -386,8 +386,15 @@
         if (data.mfaBypass || data.success) {
           if (data.mfaBypass) {
             document.getElementById('mfaBypassNote').classList.remove('hidden');
+            document.querySelectorAll('.form-section').forEach(function(s) { s.classList.remove('active'); });
+            document.querySelectorAll('.step').forEach(function(s) { s.classList.remove('active', 'complete'); });
+            document.getElementById('step3').classList.add('active');
+            document.getElementById('step1-indicator').classList.add('complete');
+            document.getElementById('step3-indicator').classList.add('active');
+            clearAlert();
+          } else {
+            goToStep(3);
           }
-          goToStep(3);
         } else if (data.accountAuthToken || (data.mfaOptions && data.mfaOptions.length > 0)) {
           accountAuthToken = data.accountAuthToken || data.mfaOptions[0].accountAuthToken;
           goToStep(2);

@@ -50,20 +50,6 @@ async function main() {
     fullPage: true,
   });
 
-  await page.evaluate(() => {
-    const msg = 'We are unable to process this request. Please try again later or call FedEx Customer Service and ask for technical support.';
-    document.getElementById('alertArea').innerHTML = '<div class="alert alert-error">' + msg + '</div>';
-  });
-  await page.waitForTimeout(300);
-  await waitForFedExLogo(page);
-
-  const fallbackDir = path.join(PKG_ROOT, 'Fallback');
-  fs.mkdirSync(fallbackDir, { recursive: true });
-  await page.screenshot({
-    path: path.join(fallbackDir, '01_customer_service_fallback.png'),
-    fullPage: false,
-  });
-
   await browser.close();
   console.log('Saved Sweden MFA bypass screenshots to:', OUT);
 }

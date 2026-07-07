@@ -12,7 +12,8 @@
     .header h1 { font-size: 24px; font-weight: 600; margin-bottom: 8px; }
     .header p { font-size: 14px; opacity: 0.9; }
     .eula-container { padding: 32px; }
-    .eula-scroll-box { border: 1px solid #ddd; border-radius: 4px; height: 500px; overflow-y: scroll; padding: 32px; background: #fafafa; margin-bottom: 24px; position: relative; }
+    .eula-scroll-box { border: 1px solid #ddd; border-radius: 4px; height: 500px; overflow-y: scroll; padding: 32px 32px 0 32px; background: #fafafa; margin-bottom: 24px; position: relative; }
+    .eula-scroll-viewport-footer { position: sticky; bottom: 0; margin: 24px -32px 0; padding: 10px 32px; background: linear-gradient(to top, #fafafa 85%, rgba(250,250,250,0)); border-top: 1px solid #ddd; text-align: center; font-size: 12px; color: #666; line-height: 1.5; z-index: 2; }
     .eula-content { line-height: 1.7; color: #333; font-size: 14px; }
     .eula-content h2 { font-size: 18px; margin: 28px 0 14px 0; color: #4A148C; font-weight: 600; }
     .eula-content h2:first-child { margin-top: 0; }
@@ -229,6 +230,10 @@
           </div>
 
         </div>
+        <div class="eula-scroll-viewport-footer">
+          FedEx End User License Agreement (3rd Party Hosted)<br>
+          FedEx Form No. 2002382 v 4 June 2024 Rev
+        </div>
         <div class="scroll-indicator" id="scrollIndicator">
           Scroll down to read the full agreement
         </div>
@@ -279,6 +284,7 @@
       acceptLabel.classList.remove('disabled');
       scrollIndicator.style.display = 'none';
       scrollPrompt.style.display = 'none';
+      continueBtn.disabled = !acceptCheckbox.checked;
     }
 
     acceptCheckbox.addEventListener('change', function() {

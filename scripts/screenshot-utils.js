@@ -1,10 +1,11 @@
 const path = require('path');
 
 const BASE = 'https://cook-kwees-fedex-shipping.vercel.app';
+const CASE_ID = '00003201';
 const PKG_ROOT = path.join(
   process.env.USERPROFILE || '',
   'Downloads',
-  'TAloha_FedEx_Validation_Case00003190',
+  `TAloha_FedEx_Validation_Case${CASE_ID}`,
   'Screenshots'
 );
 
@@ -62,4 +63,4 @@ async function ensureRateDemoMerchant(request, storeId) {
   }
 }
 
-module.exports = { BASE, PKG_ROOT, waitForFedExLogo, ensureRateDemoMerchant };
+module.exports = { BASE, CASE_ID, PKG_ROOT, waitForFedExLogo, ensureRateDemoMerchant };

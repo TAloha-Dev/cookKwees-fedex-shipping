@@ -572,6 +572,7 @@
       var needsState = country === 'US' || country === 'CA' || country === 'MX';
       stateInput.required = needsState;
       stateLabel.textContent = needsState ? 'State/Province *' : 'State/Province';
+      stateInput.placeholder = needsState ? 'NY' : '';
       if (!needsState) stateInput.value = '';
     }
 

@@ -33,6 +33,7 @@ async function main() {
   await page.selectOption('#country', 'SE');
   await page.evaluate(() => {
     document.getElementById('state').value = '';
+    document.getElementById('state').placeholder = '';
     if (typeof updateCountryFields === 'function') updateCountryFields();
   });
   await page.waitForTimeout(300);
@@ -52,7 +53,9 @@ async function main() {
   });
 
   // Fallback customer service message screenshot
-  await page.evaluate(() => showAlert(FEDEX_SUPPORT_MSG));
+  await page.evaluate(() => {
+    showAlert('We are unable to process this request. Please try again later or call FedEx Customer Service and ask for technical support.');
+  });
   await page.waitForTimeout(300);
   const fallbackDir = path.join(path.dirname(OUT), '..', 'Fallback');
   fs.mkdirSync(fallbackDir, { recursive: true });

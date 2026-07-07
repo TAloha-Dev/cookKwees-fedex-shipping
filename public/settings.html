@@ -46,8 +46,8 @@
     .success-state { text-align: center; padding: 40px 20px; }
     .success-icon { width: 64px; height: 64px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 32px; color: white; }
     .fedex-disclaimer { margin-top: 32px; padding-top: 24px; border-top: 1px solid #eee; font-size: 12px; color: #666; text-align: center; }
-    .fedex-logo-wrap { margin-bottom: 16px; padding: 36px; background: white; display: inline-block; border-radius: 4px; }
-    .fedex-logo-wrap img { height: 36px; display: block; }
+    .fedex-logo-wrap { margin-bottom: 16px; padding: 10px; background: white; display: inline-block; border-radius: 4px; line-height: 0; }
+    .fedex-logo-wrap img { height: 40px; width: auto; display: block; }
     .hidden { display: none; }
   </style>
 </head>
@@ -101,8 +101,8 @@
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
           <div class="form-group">
-            <label for="state">State/Province *</label>
-            <input type="text" id="state" placeholder="NY" maxlength="2" required>
+            <label for="state" id="stateLabel">State/Province *</label>
+            <input type="text" id="state" placeholder="NY" maxlength="2">
           </div>
           <div class="form-group">
             <label for="postalCode">Postal Code *</label>
@@ -558,7 +558,20 @@
       clearAlert();
     }
 
+    function updateCountryFields() {
+      var country = document.getElementById('country').value;
+      var stateInput = document.getElementById('state');
+      var stateLabel = document.getElementById('stateLabel');
+      var needsState = country === 'US' || country === 'CA' || country === 'MX';
+      stateInput.required = needsState;
+      stateLabel.textContent = needsState ? 'State/Province *' : 'State/Province';
+      if (!needsState) stateInput.value = '';
+    }
+
     window.addEventListener('DOMContentLoaded', function() {
+      document.getElementById('country').addEventListener('change', updateCountryFields);
+      updateCountryFields();
+
       var eulaAccepted = localStorage.getItem('ta_fedex_eula_accepted');
       var eulaVersion = localStorage.getItem('ta_fedex_eula_version');
       if (!eulaAccepted || eulaVersion !== 'v4_202406') {

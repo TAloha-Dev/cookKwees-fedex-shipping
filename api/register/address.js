@@ -11,7 +11,8 @@ function buildStreetLines(street) {
     return street.map((line) => String(line).trim()).filter(Boolean);
   }
   if (!street) return [];
-  return String(street).split(",").map((line) => line.trim()).filter(Boolean);
+  // FedEx validation: keep full street on one line (e.g. "HAGAGATAN 1, VI")
+  return [String(street).trim()].filter(Boolean);
 }
 
 function buildFedExAddress(address) {

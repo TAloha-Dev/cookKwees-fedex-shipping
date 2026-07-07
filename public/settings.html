@@ -46,7 +46,7 @@
     .success-state { text-align: center; padding: 40px 20px; }
     .success-icon { width: 64px; height: 64px; background: #4CAF50; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px auto; font-size: 32px; color: white; }
     .fedex-disclaimer { margin-top: 32px; padding-top: 24px; border-top: 1px solid #eee; font-size: 12px; color: #666; text-align: center; }
-    .fedex-logo-wrap { margin-bottom: 16px; padding: 12px; background: white; display: inline-block; border-radius: 4px; }
+    .fedex-logo-wrap { margin-bottom: 16px; padding: 36px; background: white; display: inline-block; border-radius: 4px; }
     .fedex-logo-wrap img { height: 36px; display: block; }
     .hidden { display: none; }
   </style>
@@ -55,7 +55,7 @@
   <div class="container">
     <div class="header">
       <div class="fedex-logo-wrap">
-        <img src="/FedEx_Purple_Orange.jpg" alt="FedEx®">
+        <img src="/Logo.png" alt="FedEx®">
       </div>
       <h1>FedEx Account Registration</h1>
       <p>Connect your FedEx account to enable live shipping rates</p>
@@ -225,6 +225,9 @@
           <div class="success-icon">✓</div>
           <h2>Registration Complete!</h2>
           <p style="color: #666; margin-top: 12px;">Your FedEx account has been successfully connected.</p>
+          <p id="mfaBypassNote" class="hidden" style="color: #666; margin-top: 12px; font-size: 14px;">
+            Account verified via address validation. Multi-factor authentication (invoice/PIN) was not required for this account.
+          </p>
           <div style="margin-top: 32px;">
             <button class="btn-primary" onclick="window.location.href='/'">Continue to Dashboard</button>
           </div>
@@ -336,6 +339,9 @@
       for (var i = 1; i < stepNum; i++) {
         document.getElementById('step' + i + '-indicator').classList.add('complete');
       }
+      if (stepNum !== 3) {
+        document.getElementById('mfaBypassNote').classList.add('hidden');
+      }
       clearAlert();
     }
 
@@ -378,6 +384,9 @@
         var data = await response.json();
 
         if (data.mfaBypass || data.success) {
+          if (data.mfaBypass) {
+            document.getElementById('mfaBypassNote').classList.remove('hidden');
+          }
           goToStep(3);
         } else if (data.accountAuthToken || (data.mfaOptions && data.mfaOptions.length > 0)) {
           accountAuthToken = data.accountAuthToken || data.mfaOptions[0].accountAuthToken;
